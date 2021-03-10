@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:dist="http://schemas.android.com/apk/distribution"
+    package="com.joker.fcapp1">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/new_logo"
+        android:label="FC App"
+        android:roundIcon="@mipmap/new_logo"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".Food_trial" />
+        <activity android:name=".Menu_trial" />
+        <activity android:name=".ui.home.Menu" />
+        <activity android:name=".Shop1Activity" />
+        <activity
+            android:name=".LBActivity"
+            android:label="@string/title_activity_lb"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Database.LBActivity"
+            android:label="@string/title_activity_lb"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Main2Activity"
+            android:label="@string/title_activity_main2" />
+        <activity
+            android:name=".ProfileActivity"
+            android:label="@string/title_activity_profile" />
+        <activity android:name=".profsignin" />
+        <activity
+            android:name=".proffrontpage"
+            android:theme="@style/Theme.Design.Light.NoActionBar" />
+        <activity android:name=".promainpage" />
+        <activity android:name=".p_g_signin" />
+        <activity
+            android:name=".g_p_mobileverification"
+            android:theme="@style/Theme.Design.Light.NoActionBar" />
+        <activity android:name=".p_s_mobileverification" />
+        <activity
+            android:name=".g_s_mobileverification"
+            android:theme="@style/Theme.Design.Light.NoActionBar" />
+        <activity
+            android:name=".mobileverification"
+            android:theme="@style/Theme.Design.Light.NoActionBar" />
+        <activity
+            android:name=".SignUpActivity"
+            android:theme="@style/Theme.Design.Light.NoActionBar" />
+        <activity
+            android:name=".SignInActivity"
+            android:theme="@style/Theme.Design.Light.NoActionBar" />
+        <activity
+            android:name=".StdFrontPageActivity"
+            android:theme="@style/Theme.Design.Light.NoActionBar" />
+        <activity
+            android:name=".profileactivity"
+            android:theme="@style/Theme.Design.Light.NoActionBar" />
+        <activity
+            android:name=".MainActivity"
+            android:theme="@style/Theme.Design.Light.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <dist:module dist:instant="true" />
+
+</manifest>

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "377061902638",
+    "firebase_url": "https://fcapp-b84ad.firebaseio.com",
+    "project_id": "fcapp-b84ad",
+    "storage_bucket": "fcapp-b84ad.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:377061902638:android:1aa025ad91fe829f",
+        "android_client_info": {
+          "package_name": "com.joker.fcapp1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "377061902638-fniff5dfslotj9i63t2k27ujqqknt41o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.joker.fcapp1",
+            "certificate_hash": "d37ef59d5d29cd06a92c47cfe5de58f1485ad79a"
+          }
+        },
+        {
+          "client_id": "377061902638-2d4k6m6rr3jmodb3gv9uibi59k052sdi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAkHuftOoNK5h2hfvGo0q-3SHgMvHspJC4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "377061902638-2d4k6m6rr3jmodb3gv9uibi59k052sdi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
