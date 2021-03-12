@@ -29,6 +29,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.joker.fcapp1.Main2Activity;
 import com.joker.fcapp1.MainActivity;
+import com.joker.fcapp1.Model.User;
 import com.joker.fcapp1.Model.Username;
 import com.joker.fcapp1.R;
 import com.joker.fcapp1.StdFrontPageActivity;
@@ -99,18 +100,15 @@ public class ProfileFragment extends Fragment{
         dbRef.child(userKey).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                uname = dataSnapshot.child("Name").getValue(String.class);
-                email = dataSnapshot.child("Email").getValue(String.class);
-                imgurl = dataSnapshot.child("ProfileUrl").getValue(String.class);
-                phnno= dataSnapshot.child("Phonenumber").getValue(String.class);
+                User user = dataSnapshot.getValue(User.class);
+                profileName.setText(user.getName());
+                profileEmail.setText(user.getEmail());
+                profilephnno.setText(user.getPhonenumber());
+                Picasso.get().load(user.getProfileurl()).into(profileImage);
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {}
         });
-        profileName.setText(uname);
-        profileEmail.setText(email);
-        profilephnno.setText(phnno);
-        Picasso.get().load(imgurl).placeholder(R.drawable.profile).into(profileImage);
     }
 }
