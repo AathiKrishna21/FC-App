@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardview1"
+    android:layout_marginStart="10dp"
+    android:layout_marginTop="25dp"
+    android:layout_marginEnd="10dp"
+    android:layout_marginBottom="25dp"
+    app:cardCornerRadius="25dp"
+    app:cardElevation="10dp"
+    app:cardUseCompatPadding="true"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/imageView7">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/orderid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="OrderId"
+            android:textSize="25dp"/>
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Shop Name"
+            android:textSize="25dp"
+            android:layout_below="@+id/orderid"/>
+        <TextView
+            android:id="@+id/phnnum"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Number of items"
+            android:textSize="25dp"
+            android:layout_below="@+id/name"/>
+        <TextView
+            android:id="@+id/status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Status"
+            android:textSize="25dp"
+            android:layout_below="@+id/phnnum"/>
+        <TextView
+            android:id="@+id/total"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Total Cost"
+            android:textSize="25dp"
+            android:layout_below="@+id/status"/>
+<!--        <info.hoang8f.widget.FButton-->
+<!--            android:id="@+id/btnstatus"-->
+<!--            android:text="Status"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_below="@+id/total"-->
+<!--            app:cornerRadius="0dp"-->
+<!--            android:backgroundTint="@color/white"-->
+<!--            app:fButtonColor="@color/white" />-->
+<!--        <info.hoang8f.widget.FButton-->
+<!--            android:id="@+id/btncancel"-->
+<!--            android:text="Cancel"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_below="@+id/total"-->
+<!--            android:layout_toRightOf="@+id/btnstatus"-->
+<!--            app:cornerRadius="0dp"-->
+<!--            android:backgroundTint="@color/white"-->
+<!--            app:fButtonColor="@color/white" />-->
+<!--        <info.hoang8f.widget.FButton-->
+<!--            android:id="@+id/btnorderdetail"-->
+<!--            android:text="Details"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_below="@+id/total"-->
+<!--            android:layout_toRightOf="@+id/btncancel"-->
+<!--            app:cornerRadius="0dp"-->
+<!--            android:backgroundTint="@color/white"-->
+<!--            app:fButtonColor="@color/white" />-->
+<!--        <info.hoang8f.widget.FButton-->
+<!--            android:id="@+id/btndelivered"-->
+<!--            android:text="Delivered"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_below="@+id/total"-->
+<!--            android:layout_toRightOf="@+id/btnorderdetail"-->
+<!--            app:cornerRadius="0dp"-->
+<!--            android:backgroundTint="@color/white"-->
+<!--            app:fButtonColor="@color/white" />-->
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

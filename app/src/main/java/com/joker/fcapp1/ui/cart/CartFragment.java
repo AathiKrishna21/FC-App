@@ -42,14 +42,14 @@ public class CartFragment extends Fragment {
     RecyclerView.LayoutManager layoutManager;
 
     FirebaseDatabase database;
-    DatabaseReference dRef,profileRef;
+    DatabaseReference dRef,FoodRef,profiledRef;
 
     TextView total_cost;
     Button orderbtn;
-
+    Cart cart1;
     List<Cart> cart = new ArrayList<>();
     CartAdapter adapter;
-    String userKey,uname,phnno;
+    String userKey,ShopId,FoodId,name,phnno;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -60,7 +60,8 @@ public class CartFragment extends Fragment {
 
         database = FirebaseDatabase.getInstance();
         dRef = database.getReference("Orders");
-        profileRef=database.getReference("Users");
+        FoodRef=database.getReference("Foods");
+        profiledRef=database.getReference("Users");
 
         //Init
         recyclerView = root.findViewById(R.id.cartrecyclerview);
@@ -74,25 +75,12 @@ public class CartFragment extends Fragment {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         userKey = user.getUid();
 
-        profileRef.child(userKey).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                uname=snapshot.child("Name").getValue().toString();
-                phnno=snapshot.child("Phonenumber").getValue().toString();
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
 
         orderbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                for(Cart cart : cart)
-                    cart.setProductId("0"+cart.getProductId());
-                Order order = new Order(uname,phnno,total_cost.getText().toString(),userKey,cart);
+                Order order = new Order(name,phnno,ShopId,total_cost.getText().toString(),"0",userKey,cart);
                 dRef.child(String.valueOf(System.currentTimeMillis())).setValue(order);
                 new Database(getContext()).cleanCart();
                 Toast.makeText(CartFragment.this.getContext(),"Order Placed.",Toast.LENGTH_SHORT).show();
@@ -101,6 +89,34 @@ public class CartFragment extends Fragment {
         });
 
         loadCart();
+
+        if(!cart.isEmpty()) {
+            cart1=cart.get(0);
+            FoodId = cart1.getProductId();
+            FoodRef.child(FoodId).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    ShopId = snapshot.child("MenuId").getValue().toString();
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+            profiledRef.child(userKey).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    name = snapshot.child("Name").getValue().toString();
+                    phnno = snapshot.child("Phonenumber").getValue().toString();
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        }
 
         cartViewModel.getText().observe(this, new Observer<String>() {
             @Override

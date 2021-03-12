@@ -3,16 +3,34 @@ package com.joker.fcapp1.Model;
 import java.util.List;
 
 public class Order {
-    private String Name,Phonenumber,Totalcost,status,UId;
+    private String name,phonenumber,ShopId,Totalcost,status,UId;
     private List<Cart> Foods;
 
-    public Order(String name, String phonenumber, String totalcost, String uid, List<Cart> foods) {
-        Name = name;
-        Phonenumber = phonenumber;
+    public Order(String name,String phonenumber,String shopId, String totalcost, String status, String uid, List<Cart> foods){
+        this.name=name;
+        this.phonenumber=phonenumber;
+        ShopId = shopId;
         Totalcost = totalcost;
         Foods = foods;
-        this.status="0";
+        this.status=status;
         UId=uid;
+    }
+
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPhonenumber() {
+        return phonenumber;
+    }
+
+    public void setPhonenumber(String phonenumber) {
+        this.phonenumber = phonenumber;
     }
 
     public String getUId() {
@@ -34,20 +52,12 @@ public class Order {
     public Order() {
     }
 
-    public String getName() {
-        return Name;
+    public String getShopId() {
+        return ShopId;
     }
 
-    public void setName(String name) {
-        Name = name;
-    }
-
-    public String getPhonenumber() {
-        return Phonenumber;
-    }
-
-    public void setPhonenumber(String phonenumber) {
-        Phonenumber = phonenumber;
+    public void setShopId(String shopId) {
+        ShopId = shopId;
     }
 
     public String getTotalcost() {
