@@ -16,9 +16,11 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
@@ -40,6 +42,7 @@ public class g_s_mobileverification extends AppCompatActivity {
     String name,email,username;
     String userKey;
     FirebaseAuth mAuth;
+    PhoneAuthCredential credential;
     private DatabaseReference mDatabase;
 
     private void findviews(){
@@ -83,27 +86,25 @@ public class g_s_mobileverification extends AppCompatActivity {
                 dialog.setMessage("Please Wait...");
                 dialog.show();
                 otp=enterotp.getText().toString();
-                PhoneAuthCredential credential=PhoneAuthProvider.getCredential(verificationCode,otp);
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                userKey = user.getUid();
-                auth.signInWithCredential(credential)
-                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                credential=PhoneAuthProvider.getCredential(verificationCode,otp);
+                auth.getCurrentUser().linkWithCredential(credential)
+                        .addOnCompleteListener(g_s_mobileverification.this, new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
-
                                 if (task.isSuccessful()) {
+                                    FirebaseUser user = task.getResult().getUser();
                                     dialog.dismiss();
-                                    Username u2=new Username();
-                                    username=u2.getUsername();
-                                    dbRef.child(userKey).child("Phonenumber").setValue(phnnum);
+                                    dbRef.child(user.getUid()).child("Phonenumber").setValue(phnnum);
                                     Toast.makeText(g_s_mobileverification.this,"Verification Successful!",Toast.LENGTH_SHORT).show();
-                                    startActivity(new Intent(g_s_mobileverification.this, Main2Activity.class));
+                                    startActivity(new Intent(g_s_mobileverification.this, SignInActivity.class));
                                     finish();
+
+                                } else {
+                                    Toast.makeText(g_s_mobileverification.this, "Authentication failed.",
+                                            Toast.LENGTH_SHORT).show();
                                 }
-                                else {
-                                    dialog.dismiss();
-                                    Toast.makeText(g_s_mobileverification.this, "Incorrect OTP", Toast.LENGTH_SHORT).show();
-                                }
+
+                                // ...
                             }
                         });
 
@@ -117,6 +118,7 @@ public class g_s_mobileverification extends AppCompatActivity {
             @Override
             public void onVerificationCompleted(PhoneAuthCredential phoneAuthCredential) {
                 Toast.makeText(g_s_mobileverification.this,"Verification completed",Toast.LENGTH_SHORT).show();
+
             }
 
             @Override

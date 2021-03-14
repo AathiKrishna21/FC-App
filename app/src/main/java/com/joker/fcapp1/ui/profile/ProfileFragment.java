@@ -48,9 +48,10 @@ public class ProfileFragment extends Fragment{
     private TextView profileName, profileEmail,profilephnno;
     private ImageView profileImage;
     public static String uname,email,phnno;
-    static String imgurl,userKey;
+    static String imgurl,userKey,phonenumber;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference dbRef = database.getReference("Users");
+    User r =new User();
     public View onCreateView(@NonNull final LayoutInflater inflater,
                              final ViewGroup container, Bundle savedInstanceState) {
         profileViewModel =
@@ -63,7 +64,7 @@ public class ProfileFragment extends Fragment{
         profileName=root.findViewById(R.id.textView3);
         profileEmail=root.findViewById(R.id.textView5);
         profilephnno=root.findViewById(R.id.textView6);
-
+//        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         /*
         cpass.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,6 +98,10 @@ public class ProfileFragment extends Fragment{
         super.onViewCreated(view, savedInstanceState);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         userKey = user.getUid();
+        String phoneNumber = user.getPhoneNumber();
+        profileName.setText(userKey);
+        profileEmail.setText(user.getEmail());
+        profilephnno.setText(phoneNumber);
         dbRef.child(userKey).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -111,4 +116,5 @@ public class ProfileFragment extends Fragment{
             public void onCancelled(DatabaseError databaseError) {}
         });
     }
+
 }

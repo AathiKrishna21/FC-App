@@ -3,14 +3,14 @@ package com.joker.fcapp1.Model;
 import com.joker.fcapp1.ui.profile.ProfileFragment;
 
 public class User {
-    private String Name;
-    private String Phonenumber,Email,ProfileUrl;
+    private static String Name;
+    private static String Phonenumber,Email,ProfileUrl;
 
     public User(String name, String phonenumber, String email, String profileurl) {
-        Name = name;
-        Phonenumber = phonenumber;
-        Email = email;
-        ProfileUrl = profileurl;
+        this.Name = name;
+        this.Phonenumber = phonenumber;
+        this.Email = email;
+        this.ProfileUrl = profileurl;
     }
 
     public void setEmail(String email) {
