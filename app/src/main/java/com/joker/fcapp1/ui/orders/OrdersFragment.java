@@ -1,34 +1,31 @@
 package com.joker.fcapp1.ui.orders;
 
+import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
+import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
+import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.joker.fcapp1.Database.Database;
 import com.joker.fcapp1.Model.Cart;
 import com.joker.fcapp1.Model.Order;
 import com.joker.fcapp1.R;
-import com.joker.fcapp1.ViewHolder.CartAdapter;
+import com.joker.fcapp1.Tab.CurrentOrders;
+import com.joker.fcapp1.Tab.Favourites;
+import com.joker.fcapp1.Tab.PastOrders;
 import com.joker.fcapp1.ViewHolder.OrderViewHolder;
 
 import java.util.ArrayList;
@@ -37,80 +34,96 @@ import java.util.List;
 public class OrdersFragment extends Fragment {
 
     private OrdersViewModel ordersViewModel;
-    RecyclerView recyclerView;
-    RecyclerView.LayoutManager layoutManager;
-    TextView tx;
-    FirebaseDatabase database;
-    DatabaseReference dRef,profileRef;
-    List<Order> order = new ArrayList<>();
-    FirebaseRecyclerAdapter <Order, OrderViewHolder> adapter;
-    String userKey,phnno;
-    Order od;
-    List<Cart> cart;
+
+    TabLayout tabLayout;
+    ViewPager viewPager;
+    public static int int_items = 3;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         ordersViewModel =
                 ViewModelProviders.of(this).get(OrdersViewModel.class);
         View root = inflater.inflate(R.layout.fragment_orders, container, false);
-        database = FirebaseDatabase.getInstance();
-//        tx = root.findViewById(R.id.sample);
-        dRef = database.getReference("Orders");
-        recyclerView = root.findViewById(R.id.ordesrrecyclerview);
-        recyclerView.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(this.getContext());
-        recyclerView.setLayoutManager(layoutManager);
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        userKey = user.getUid();
 
-//        dRef.child(userKey).addValueEventListener(new ValueEventListener() {
+        tabLayout=root.findViewById(R.id.tabs);
+        viewPager=root.findViewById(R.id.viewpager);
+
+        tabLayout.addTab(tabLayout.newTab().setText("Past Orders"));
+        tabLayout.addTab(tabLayout.newTab().setText("Upcoming"));
+        tabLayout.addTab(tabLayout.newTab().setText("Favourites"));
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+
+
+
+        final MyAdapter adapter = new MyAdapter(getContext(),getChildFragmentManager(), tabLayout.getTabCount());
+        viewPager.setAdapter(adapter);
+
+//        viewPager.setAdapter(new MyAdapter(getChildFragmentManager()));
+//        tabLayout.post(new Runnable() {
 //            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                od= snapshot.child("foods").getValue(Order.class);
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
+//            public void run() {
+//                tabLayout.setupWithViewPager(viewPager);
 //            }
 //        });
-//        Log.d("myTag", od.toString());
-//          cart=od.getFoods();
-//        phnno=od.getName();
-//        tx.setText(phnno);
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager.setCurrentItem(tab.getPosition());
+            }
 
-        loadOrder(userKey);
-//        final TextView textView = root.findViewById(R.id.text_notifications);
-//        ordersViewModel.getText().observe(this, new Observer<String>() {
-//            @Override
-//            public void onChanged(@Nullable String s) {
-//                textView.setText(s);
-//            }
-//        });
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+        tabLayout.getTabAt(0).setText("Past Orders");
+        tabLayout.getTabAt(1).setText("Current Orders");
+        tabLayout.getTabAt(2).setText("Favourites");
         return root;
     }
-    private void loadOrder(String uerkey) {
-        FirebaseRecyclerOptions<Order> options=new FirebaseRecyclerOptions.Builder<Order>()
-                .setQuery(dRef.orderByChild("uid").equalTo(userKey),Order.class)
-                .build();
-        adapter=new FirebaseRecyclerAdapter<Order, OrderViewHolder>(options) {
-            @Override
-            protected void onBindViewHolder(@NonNull OrderViewHolder holder, int position, @NonNull Order model) {
-                holder.orderId.setText(adapter.getRef(position).getKey());
-                holder.name.setText(model.getShopId());
-//                holder.items.setText();
-                holder.status.setText(model.getStatus());
-                holder.total_cost.setText(model.getTotalcost());
-            }
 
-            @NonNull
-            @Override
-            public OrderViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.orders_items,parent,false);
-                return new OrderViewHolder(view);
-//                return null;
+    public class MyAdapter extends FragmentPagerAdapter {
+
+        private Context myContext;
+        int totalTabs;
+        private String[] tabTitles = new String[]{"Past Orders", "Upcoming", "Favourites"};
+        public MyAdapter(Context context, FragmentManager fm, int totalTabs) {
+            super(fm);
+            myContext = context;
+            this.totalTabs = totalTabs;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return tabTitles[position];
+        }
+
+        // this is for fragment tabs
+        @Override
+        public Fragment getItem(int position) {
+            switch (position) {
+                case 0:
+                    PastOrders pc =new PastOrders();
+                    return pc;
+                case 1:
+                    CurrentOrders co =new CurrentOrders();
+                    return co;
+                case 2:
+                    Favourites f =new Favourites();
+                    return f;
+                default:
+                    return null;
             }
-        };
-        adapter.startListening();
-        recyclerView.setAdapter(adapter);
+        }
+        // this counts total number of tabs
+        @Override
+        public int getCount() {
+            return totalTabs;
+        }
     }
 }
