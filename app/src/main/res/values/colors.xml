@@ -6,4 +6,5 @@
     <color name="status_bar">#FFFF3F04</color>
     <color name="white">#FFFFFF</color>
     <color name="orange">#FF7104</color>
+    <color name="lorange">#ff8400</color>
 </resources>
