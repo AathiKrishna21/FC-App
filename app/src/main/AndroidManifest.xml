@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:dist="http://schemas.android.com/apk/distribution"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.joker.fcapp1">
 
     <application
@@ -9,7 +10,8 @@
         android:label="FC App"
         android:roundIcon="@mipmap/new_logo"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:replace="android:icon,android:label">
         <activity android:name=".Food_trial" />
         <activity android:name=".Menu_trial" />
         <activity android:name=".ui.home.Menu" />

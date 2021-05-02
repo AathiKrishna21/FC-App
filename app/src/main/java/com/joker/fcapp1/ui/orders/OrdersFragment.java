@@ -2,6 +2,7 @@ package com.joker.fcapp1.ui.orders;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,6 +65,7 @@ public class OrdersFragment extends Fragment {
 //                tabLayout.setupWithViewPager(viewPager);
 //            }
 //        });
+        viewPager.setCurrentItem(1);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -81,9 +83,6 @@ public class OrdersFragment extends Fragment {
 
             }
         });
-        tabLayout.getTabAt(0).setText("Past Orders");
-        tabLayout.getTabAt(1).setText("Current Orders");
-        tabLayout.getTabAt(2).setText("Favourites");
         return root;
     }
 

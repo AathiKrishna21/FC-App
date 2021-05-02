@@ -103,8 +103,6 @@ public class g_s_mobileverification extends AppCompatActivity {
                                     Toast.makeText(g_s_mobileverification.this, "Authentication failed.",
                                             Toast.LENGTH_SHORT).show();
                                 }
-
-                                // ...
                             }
                         });
 

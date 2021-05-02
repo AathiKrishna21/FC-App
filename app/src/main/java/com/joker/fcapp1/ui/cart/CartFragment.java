@@ -30,8 +30,13 @@ import com.joker.fcapp1.Model.Cart;
 import com.joker.fcapp1.Model.Order;
 import com.joker.fcapp1.R;
 import com.joker.fcapp1.ViewHolder.CartAdapter;
-
+import com.joker.fcapp1.ui.orders.OrdersFragment;
+import com.tapadoo.alerter.Alerter;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class CartFragment extends Fragment {
@@ -43,10 +48,11 @@ public class CartFragment extends Fragment {
 
     FirebaseDatabase database;
     DatabaseReference dRef,FoodRef,profiledRef;
-
-    TextView total_cost;
+    Boolean alerter=false;
+    public TextView total_cost;
     Button orderbtn;
     Cart cart1;
+    String date,time;
     List<Cart> cart = new ArrayList<>();
     CartAdapter adapter;
     String userKey,ShopId,FoodId,name,phnno;
@@ -80,11 +86,33 @@ public class CartFragment extends Fragment {
         orderbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Order order = new Order(name,phnno,ShopId,total_cost.getText().toString(),"0",userKey,cart);
+                Date currentTime = Calendar.getInstance().getTime();
+                String datetime=currentTime.toString();
+                String[] words=datetime.split("\\s");
+                date=words[1]+" "+words[2]+" "+words[5];
+                time=words[3];
+                time=time.substring(0,5);
+                Order order = new Order(date,time,ShopId,total_cost.getText().toString(),"0",userKey,cart);
                 dRef.child(String.valueOf(System.currentTimeMillis())).setValue(order);
                 new Database(getContext()).cleanCart();
-                Toast.makeText(CartFragment.this.getContext(),"Order Placed.",Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(CartFragment.this.getActivity(), Main2Activity.class));
+                alerter=true;
+                Intent intent=new Intent(CartFragment.this.getActivity(), Main2Activity.class);
+                intent.putExtra("Alerter",alerter);
+                startActivity(intent);
+                /*Alerter.create(getActivity())
+                        .setTitle("Order Placed!")
+                        .setText("Click to see Order Status")
+                        .setIcon(R.drawable.ic_order)
+                        .setDuration(3000)
+                        .setBackgroundColorRes(R.color.status_bar)
+                        .setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                startActivity(new Intent(CartFragment.this.getActivity(), OrdersFragment.class));
+                            }
+                        })
+                        .enableSwipeToDismiss()
+                        .show();*/
             }
         });
 
@@ -129,13 +157,14 @@ public class CartFragment extends Fragment {
 
     private void loadCart() {
         cart = new Database(this.getContext()).getCarts();
-        adapter = new CartAdapter(cart,this.getContext());
-        recyclerView.setAdapter(adapter);
+        adapter = new CartAdapter(cart,this);
+
 
         //Calculate full total price
         int total=0 ;
         for(Cart cart : this.cart)
-            total+=(Integer.parseInt(cart.getPrice()));
+            total+=(Integer.parseInt(cart.getPrice())*(Integer.parseInt(cart.getQuantity())));
         total_cost.setText(String.valueOf(total));
+        recyclerView.setAdapter(adapter);
     }
 }

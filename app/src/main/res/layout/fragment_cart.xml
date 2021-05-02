@@ -4,29 +4,42 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
     tools:context="com.joker.fcapp1.ui.cart.CartFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/cartrecyclerview"
-        android:layout_width="395dp"
-        android:layout_height="620dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:scrollbars="vertical" />
 
-    <TextView
-        android:id="@+id/total_cost"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/cartrecyclerview"
-        android:text="Total : "/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/orange">
+        <TextView
+            android:id="@+id/total_cost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Total : "
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textSize="17dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="140dp"/>
 
-    <TextView
-        android:id="@+id/amount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/cartrecyclerview"
-        android:layout_toEndOf="@+id/total_cost"
-        android:text="1000"/>
+        <TextView
+            android:id="@+id/amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/total_cost"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textSize="17dp"
+            android:layout_marginTop="10dp"
+            android:text="1000"/>
 
     <Button
         android:id="@+id/button3"
@@ -34,7 +47,8 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/total_cost"
-        android:text="Place Order" />
-
+        android:text="Place Order"
+        android:layout_marginTop="10dp"/>
+    </RelativeLayout>
 
 </RelativeLayout>

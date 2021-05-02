@@ -1,5 +1,6 @@
 package com.joker.fcapp1.Database;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -54,5 +55,18 @@ public class Database extends SQLiteAssetHelper  {
         SQLiteDatabase db=getReadableDatabase();
         String query =String.format("DELETE FROM Cart");
         db.execSQL(query);
+    }
+
+    public void updateCart(Cart cart) {
+        SQLiteDatabase db=getWritableDatabase();
+        ContentValues contentValues=new ContentValues();
+        contentValues.put("ProductId",cart.getProductId());
+        contentValues.put("ProductName",cart.getProductName());
+        contentValues.put("Quantity",cart.getQuantity());
+        contentValues.put("Price",cart.getPrice());
+        String whereClause="ProductId=?";
+        String whereArgs[]={cart.getProductId()};
+        db.update("Cart",contentValues,whereClause,whereArgs);
+
     }
 }

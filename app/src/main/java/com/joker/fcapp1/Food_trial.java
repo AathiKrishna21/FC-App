@@ -71,7 +71,7 @@ public class Food_trial extends AppCompatActivity {
                     cartbutton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            new Database(getBaseContext()).addToCart(new Cart(FoodId,foodname,quantity.getText().toString(),total_cost.getText().toString()));
+                            new Database(getBaseContext()).addToCart(new Cart(FoodId,foodname,quantity.getText().toString(),cost));
                             Toast.makeText(Food_trial.this,"Added to Cart",Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(Food_trial.this, Menu_trial.class);
                             intent.putExtra("ShopId", menuId );

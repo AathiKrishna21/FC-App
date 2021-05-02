@@ -15,84 +15,96 @@
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toBottomOf="@+id/imageView7">
-
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/fl">
+        <ImageView
+        android:id="@+id/pic"
+        android:layout_width="match_parent"
+        android:layout_height="130dp"
+        android:foreground="#80000000"
+        />
+
+        <TextView
+                android:id="@+id/shopname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:lines="1"
+                android:text="Shopname"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:textColor="#FFFFFF"
+                android:textSize="24sp"
+                android:textStyle="bold|italic"
+                android:layout_marginTop="35dp"
+                android:layout_gravity="center_horizontal"/>
+
+
         <TextView
             android:id="@+id/orderid"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:lines="1"
             android:text="OrderId"
-            android:textSize="25dp"/>
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textColor="#adaaa8"
+            android:textSize="15dp"
+            android:layout_marginTop="75dp"/>
+    </FrameLayout>
+
         <TextView
-            android:id="@+id/name"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Shop Name"
-            android:textSize="25dp"
-            android:layout_below="@+id/orderid"/>
+            android:id="@+id/statustext"
+            android:layout_below="@+id/fl"
+            android:layout_marginTop="7dp"
+            android:text="STATUS"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textColor="#FF7104"
+            android:textSize="15dp"
+            android:paddingLeft="20dp"/>
         <TextView
-            android:id="@+id/phnnum"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Number of items"
-            android:textSize="25dp"
-            android:layout_below="@+id/name"/>
+            android:id="@+id/placed"
+            android:layout_below="@+id/fl"
+            android:layout_marginTop="7dp"
+            android:text="PLACED"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textColor="#FF7104"
+            android:textSize="15dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="23dp"/>
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:id="@+id/status"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Status"
-            android:textSize="25dp"
-            android:layout_below="@+id/phnnum"/>
+            android:layout_below="@+id/statustext"
+            android:layout_marginTop="3dp"
+            android:text="Order Placed"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textColor="#000000"
+            android:textSize="17dp"
+            android:paddingLeft="20dp"
+            android:layout_marginBottom="7dp"/>
         <TextView
-            android:id="@+id/total"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Total Cost"
-            android:textSize="25dp"
-            android:layout_below="@+id/status"/>
-<!--        <info.hoang8f.widget.FButton-->
-<!--            android:id="@+id/btnstatus"-->
-<!--            android:text="Status"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_below="@+id/total"-->
-<!--            app:cornerRadius="0dp"-->
-<!--            android:backgroundTint="@color/white"-->
-<!--            app:fButtonColor="@color/white" />-->
-<!--        <info.hoang8f.widget.FButton-->
-<!--            android:id="@+id/btncancel"-->
-<!--            android:text="Cancel"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_below="@+id/total"-->
-<!--            android:layout_toRightOf="@+id/btnstatus"-->
-<!--            app:cornerRadius="0dp"-->
-<!--            android:backgroundTint="@color/white"-->
-<!--            app:fButtonColor="@color/white" />-->
-<!--        <info.hoang8f.widget.FButton-->
-<!--            android:id="@+id/btnorderdetail"-->
-<!--            android:text="Details"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_below="@+id/total"-->
-<!--            android:layout_toRightOf="@+id/btncancel"-->
-<!--            app:cornerRadius="0dp"-->
-<!--            android:backgroundTint="@color/white"-->
-<!--            app:fButtonColor="@color/white" />-->
-<!--        <info.hoang8f.widget.FButton-->
-<!--            android:id="@+id/btndelivered"-->
-<!--            android:text="Delivered"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_below="@+id/total"-->
-<!--            android:layout_toRightOf="@+id/btnorderdetail"-->
-<!--            app:cornerRadius="0dp"-->
-<!--            android:backgroundTint="@color/white"-->
-<!--            app:fButtonColor="@color/white" />-->
+            android:id="@+id/time"
+            android:layout_below="@+id/placed"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="3dp"
+            android:text="Today, 18:51"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textColor="#000000"
+            android:textSize="17dp"
+            android:layout_marginRight="23dp"
+            android:layout_marginBottom="7dp"/>
+
 
     </RelativeLayout>
-
 </androidx.cardview.widget.CardView>
