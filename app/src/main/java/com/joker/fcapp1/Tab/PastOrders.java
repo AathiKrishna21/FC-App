@@ -3,6 +3,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -17,8 +18,12 @@ import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.joker.fcapp1.Model.Cart;
 import com.joker.fcapp1.Model.Order;
 import com.joker.fcapp1.R;
@@ -32,7 +37,7 @@ import java.util.List;
 public class PastOrders extends Fragment {
     private OrdersViewModel ordersViewModel;
     RecyclerView recyclerView;
-
+    ImageView bg;
     TextView tx;
     FirebaseDatabase database;
     DatabaseReference dRef,profileRef;
@@ -50,6 +55,7 @@ public class PastOrders extends Fragment {
 //        tx = root.findViewById(R.id.sample);
         dRef = database.getReference("PastOrders");
         recyclerView = root.findViewById(R.id.pastordesrrecyclerview);
+        bg=root.findViewById(R.id.bg_img);
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this.getContext());
         layoutManager.setReverseLayout(true);
@@ -80,6 +86,7 @@ public class PastOrders extends Fragment {
         return root;
     }
     private void loadOrder(String uerkey) {
+
         FirebaseRecyclerOptions<Order> options=new FirebaseRecyclerOptions.Builder<Order>()
                 .setQuery(dRef.orderByChild("uid").equalTo(userKey),Order.class)
                 .build();
@@ -89,6 +96,25 @@ public class PastOrders extends Fragment {
 
             @Override
             protected void onBindViewHolder(@NonNull PastOrderViewHolder holder, int position, @NonNull Order model) {
+                Query queries =dRef.orderByChild("uid").equalTo(userKey);
+                queries.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if(snapshot.exists()){
+                            bg.setVisibility(View.GONE);
+                            recyclerView.setVisibility(View.VISIBLE);
+                        }
+                        else{
+                            bg.setVisibility(View.VISIBLE);
+                            recyclerView.setVisibility(View.GONE);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
                 String id=adapter.getRef(position).getKey();
                 id="#"+id;
                 holder.orderid.setText(id);

@@ -13,7 +13,7 @@
         android:theme="@style/AppTheme"
         tools:replace="android:icon,android:label">
         <activity android:name=".Food_trial" />
-        <activity android:name=".Menu_trial" />
+<!--        <activity android:name=".Menu_trial" />-->
         <activity android:name=".ui.home.Menu" />
         <activity android:name=".Shop1Activity" />
         <activity
@@ -57,6 +57,9 @@
             android:theme="@style/Theme.Design.Light.NoActionBar" />
         <activity
             android:name=".profileactivity"
+            android:theme="@style/Theme.Design.Light.NoActionBar" />
+        <activity
+            android:name=".Menu_trial"
             android:theme="@style/Theme.Design.Light.NoActionBar" />
         <activity
             android:name=".MainActivity"

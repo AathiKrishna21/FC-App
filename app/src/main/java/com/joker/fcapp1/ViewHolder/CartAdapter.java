@@ -97,7 +97,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartViewHolder>{
                 Cart cart=listData.get(position);
                 cart.setQuantity(String.valueOf(newValue));
                 new Database(cart1.getContext()).updateCart(cart);
-                holder.cost.setText(String.valueOf(Integer.parseInt(listData.get(position).getPrice())*Integer.parseInt(listData.get(position).getQuantity())));
+                holder.cost.setText("Rs."+String.valueOf(Integer.parseInt(listData.get(position).getPrice())*Integer.parseInt(listData.get(position).getQuantity())));
                 total=0;
                 for(Cart c : listData)
                     total+=((Integer.parseInt(c.getPrice()))*(Integer.parseInt(c.getQuantity())));

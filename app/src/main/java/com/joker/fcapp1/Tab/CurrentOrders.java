@@ -3,6 +3,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -21,6 +22,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.joker.fcapp1.Model.Cart;
 import com.joker.fcapp1.Model.Order;
@@ -35,6 +37,7 @@ import java.util.List;
 public class CurrentOrders extends Fragment {
     private OrdersViewModel ordersViewModel;
     RecyclerView recyclerView;
+    ImageView bg;
     RecyclerView.LayoutManager layoutManager;
     TextView tx;
     FirebaseDatabase database;
@@ -54,6 +57,7 @@ public class CurrentOrders extends Fragment {
         dRef = database.getReference("Orders");
         Ref = database.getReference("Shops");
         recyclerView = root.findViewById(R.id.ordesrrecyclerview);
+        bg=root.findViewById(R.id.bg_img);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this.getContext());
         recyclerView.setLayoutManager(layoutManager);
@@ -82,6 +86,7 @@ public class CurrentOrders extends Fragment {
         return root;
     }
     private void loadOrder(String uerkey) {
+
         FirebaseRecyclerOptions<Order> options=new FirebaseRecyclerOptions.Builder<Order>()
                 .setQuery(dRef.orderByChild("uid").equalTo(userKey),Order.class)
                 .build();
@@ -89,6 +94,25 @@ public class CurrentOrders extends Fragment {
 
             @Override
             protected void onBindViewHolder(@NonNull final OrderViewHolder holder, int position, @NonNull final Order model) {
+                Query queries =dRef.orderByChild("uid").equalTo(userKey);
+                queries.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if(snapshot.exists()){
+                            bg.setVisibility(View.GONE);
+                            recyclerView.setVisibility(View.VISIBLE);
+                        }
+                        else{
+                            bg.setVisibility(View.VISIBLE);
+                            recyclerView.setVisibility(View.GONE);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
                 String orderid;
                 orderid=adapter.getRef(position).getKey();
                 orderid='#'+orderid;

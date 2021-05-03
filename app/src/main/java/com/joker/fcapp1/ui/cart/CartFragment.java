@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,12 +47,13 @@ public class CartFragment extends Fragment {
 
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
-
+    RelativeLayout relativeLayout;
     FirebaseDatabase database;
     DatabaseReference dRef,FoodRef,profiledRef;
     Boolean alerter=false;
     public TextView total_cost;
     Button orderbtn;
+    ImageView bg;
     Cart cart1;
     String date,time;
     List<Cart> cart = new ArrayList<>();
@@ -68,8 +71,9 @@ public class CartFragment extends Fragment {
         dRef = database.getReference("Orders");
         FoodRef=database.getReference("Foods");
         profiledRef=database.getReference("Users");
-
+        relativeLayout=root.findViewById(R.id.cart_relative);
         //Init
+        bg=root.findViewById(R.id.bg_img);
         recyclerView = root.findViewById(R.id.cartrecyclerview);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this.getContext());
@@ -158,7 +162,16 @@ public class CartFragment extends Fragment {
     private void loadCart() {
         cart = new Database(this.getContext()).getCarts();
         adapter = new CartAdapter(cart,this);
-
+        if(cart.isEmpty()){
+            recyclerView.setVisibility(View.GONE);
+            relativeLayout.setVisibility(View.GONE);
+            bg.setVisibility(View.VISIBLE);
+        }
+        else{
+            recyclerView.setVisibility(View.VISIBLE);
+            relativeLayout.setVisibility(View.VISIBLE);
+            bg.setVisibility(View.GONE);
+        }
 
         //Calculate full total price
         int total=0 ;

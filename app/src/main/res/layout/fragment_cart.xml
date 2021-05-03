@@ -5,6 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.joker.fcapp1.ui.cart.CartFragment">
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/bg_img"
+        android:src="@color/colorPrimaryDark"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/cartrecyclerview"
@@ -12,11 +17,13 @@
         android:layout_height="wrap_content"
         android:scrollbars="vertical" />
 
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_alignParentBottom="true"
-        android:background="@color/orange">
+        android:background="@color/orange"
+        android:id="@+id/cart_relative">
         <TextView
             android:id="@+id/total_cost"
             android:layout_width="wrap_content"
