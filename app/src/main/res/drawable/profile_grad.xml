@@ -4,5 +4,5 @@
     <gradient
         android:startColor="@color/status_bar"
         android:endColor="@color/lorange"
-        android:angle="-270" />
+        android:angle="c" />
 </shape>
