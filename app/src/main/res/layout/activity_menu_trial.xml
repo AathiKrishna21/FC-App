@@ -23,11 +23,22 @@
 <!--            android:layout_height="50dp"-->
 <!--            android:alpha="0.25"-->
 <!--            android:src="@drawable/back_arrow1"/>-->
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/back_arrow1"
-            android:id="@+id/back_button"/>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_back2"
+            android:id="@+id/back_button"
+            android:paddingLeft="10dp"
+            android:backgroundTint="#0D000000"
+            />
+
+<!--        <ImageView-->
+<!--            android:layout_width="50dp"-->
+<!--            android:layout_height="50dp"-->
+<!--            android:src="@drawable/back_arrow1"-->
+<!--            android:id="@+id/back_button"/>-->
+
         <TextView
             android:id="@+id/shopname"
             android:layout_width="wrap_content"

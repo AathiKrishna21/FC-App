@@ -1,4 +1,5 @@
 package com.joker.fcapp1.Tab;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.joker.fcapp1.Details;
 import com.joker.fcapp1.Model.Cart;
 import com.joker.fcapp1.Model.Order;
 import com.joker.fcapp1.R;
@@ -39,6 +41,7 @@ public class PastOrders extends Fragment {
     RecyclerView recyclerView;
     ImageView bg;
     TextView tx;
+    String id;
     FirebaseDatabase database;
     DatabaseReference dRef,profileRef;
     List<Order> order = new ArrayList<>();
@@ -115,13 +118,22 @@ public class PastOrders extends Fragment {
 
                     }
                 });
-                String id=adapter.getRef(position).getKey();
-                id="#"+id;
-                holder.orderid.setText(id);
+                id=adapter.getRef(position).getKey();
+//                id="#"+id;
+                holder.orderid.setText("#"+id);
                 holder.cost.setText("₹"+model.getTotalcost());
                 holder.date.setText(model.getDate());
                 holder.items.setText("x"+model.getitems()+" Items");
                 holder.shopname.setText(convertCodetoShop(model.getShopId()));
+                holder.receipt.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(getActivity(),Details.class);
+                        intent.putExtra("id",id);
+                        startActivity(intent);
+//                        finish();
+                    }
+                });
 
             }
 

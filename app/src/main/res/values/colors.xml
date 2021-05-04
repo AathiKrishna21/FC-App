@@ -7,4 +7,6 @@
     <color name="white">#FFFFFF</color>
     <color name="orange">#FF7104</color>
     <color name="lorange">#ff8400</color>
+    <color name="grey">#ebebed</color>
+    <color name="blue">#4950e3</color>
 </resources>

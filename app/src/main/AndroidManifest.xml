@@ -61,6 +61,8 @@
         <activity
             android:name=".Menu_trial"
             android:theme="@style/Theme.Design.Light.NoActionBar" />
+        <activity android:name=".Details"
+            android:theme="@style/AppTheme.popup"/>
         <activity
             android:name=".MainActivity"
             android:theme="@style/Theme.Design.Light.NoActionBar">
