@@ -104,7 +104,7 @@ public class CurrentOrders extends Fragment {
                 orderid='#'+orderid;
                 holder.orderId.setText(orderid);
                 holder.status.setText(convertCodetoStatus(model.getStatus()));
-                holder.time.setText(model.getDate()+", "+model.getTime().substring(0,5));
+                holder.time.setText("Today, "+model.getTime().substring(0,5));
                 final String menuId=model.getShopId();
 
                 Ref.child(menuId).child("Image").addValueEventListener(new ValueEventListener() {
