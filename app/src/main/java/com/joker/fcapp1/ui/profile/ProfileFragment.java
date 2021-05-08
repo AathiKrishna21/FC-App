@@ -5,19 +5,26 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.viewpager.widget.ViewPager;
 
+import com.github.ybq.android.spinkit.SpinKitView;
+import com.github.ybq.android.spinkit.sprite.Sprite;
+import com.github.ybq.android.spinkit.style.Wave;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.firebase.auth.FirebaseAuth;
@@ -47,8 +54,11 @@ public class ProfileFragment extends Fragment{
     private ProfileViewModel profileViewModel;
     private TextView profileName, profileEmail,profilephnno;
     private ImageView profileImage;
+    Button signoutbtn;
     public static String uname,email,phnno;
     static String imgurl,userKey;
+    SpinKitView waveview;
+    CardView mcardView,scardView;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference dbRef = database.getReference("Users");
     public View onCreateView(@NonNull final LayoutInflater inflater,
@@ -56,13 +66,23 @@ public class ProfileFragment extends Fragment{
         profileViewModel =
                 ViewModelProviders.of(this).get(ProfileViewModel.class);
         View root = inflater.inflate(R.layout.fragment_profile, container, false);
-        final Button signoutbtn=root.findViewById(R.id.button);
+        signoutbtn=root.findViewById(R.id.button);
         //final TextView cpass = root.findViewById(R.id.cpass);
         profileImage= root.findViewById(R.id.imageView13);
         profileName=root.findViewById(R.id.textView3);
         profileEmail=root.findViewById(R.id.textView5);
         profilephnno=root.findViewById(R.id.textView6);
-
+        mcardView=root.findViewById(R.id.cardView5);
+        mcardView.setVisibility(View.GONE);
+        scardView=root.findViewById(R.id.summacard);
+        scardView.setVisibility(View.VISIBLE);
+//        profileEmail.setVisibility(View.GONE);
+//        profileName.setVisibility(View.GONE);
+//        profilephnno.setVisibility(View.GONE);
+//        signoutbtn.setVisibility(View.GONE);
+        waveview = root.findViewById(R.id.spin_kit);
+        Sprite wave = new Wave();
+        waveview.setIndeterminateDrawable(wave);
         /*
         cpass.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,11 +118,27 @@ public class ProfileFragment extends Fragment{
         dbRef.child(userKey).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                waveview.setVisibility(View.VISIBLE);
                 User user = dataSnapshot.getValue(User.class);
                 profileName.setText(user.getName());
                 profileEmail.setText(user.getEmail());
                 profilephnno.setText(user.getPhonenumber());
                 Picasso.get().load(user.getProfileurl()).into(profileImage);
+//                cardView.setVisibility(View.VISIBLE);
+//                profileEmail.setVisibility(View.VISIBLE);
+//                profileName.setVisibility(View.VISIBLE);
+//                profilephnno.setVisibility(View.VISIBLE);
+//                signoutbtn.setVisibility(View.VISIBLE);
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        scardView.setVisibility(View.GONE);
+                        mcardView.setVisibility(View.VISIBLE);
+                    }
+                }, 1400);
+
+//                waveview.setVisibility(View.GONE);
             }
 
             @Override

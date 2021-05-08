@@ -60,13 +60,23 @@ public class Database extends SQLiteAssetHelper  {
     public void updateCart(Cart cart) {
         SQLiteDatabase db=getWritableDatabase();
         ContentValues contentValues=new ContentValues();
-        contentValues.put("ProductId",cart.getProductId());
-        contentValues.put("ProductName",cart.getProductName());
-        contentValues.put("Quantity",cart.getQuantity());
-        contentValues.put("Price",cart.getPrice());
-        String whereClause="ProductId=?";
-        String whereArgs[]={cart.getProductId()};
-        db.update("Cart",contentValues,whereClause,whereArgs);
-
+        if(cart.getQuantity().equals("0")){
+            deleteItem(cart);
+        }
+        else{
+            contentValues.put("ProductId",cart.getProductId());
+            contentValues.put("ProductName",cart.getProductName());
+            contentValues.put("Quantity",cart.getQuantity());
+            contentValues.put("Price",cart.getPrice());
+            String whereClause="ProductId=?";
+            String whereArgs[]={cart.getProductId()};
+            db.update("Cart",contentValues,whereClause,whereArgs);
+        }
+    }
+    public void deleteItem(Cart cart) {
+        SQLiteDatabase db = getWritableDatabase();
+        String whereClause = "ProductId=?";
+        String whereArgs[] = {cart.getProductId()};
+        db.delete("Cart", whereClause, whereArgs);
     }
 }

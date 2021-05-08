@@ -1,4 +1,5 @@
 package com.joker.fcapp1.Tab;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -34,6 +35,8 @@ import com.joker.fcapp1.ViewHolder.PastOrderViewHolder;
 import com.joker.fcapp1.ui.orders.OrdersViewModel;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class PastOrders extends Fragment {
@@ -41,12 +44,12 @@ public class PastOrders extends Fragment {
     RecyclerView recyclerView;
     ImageView bg;
     TextView tx;
-    String id;
+    public static String id;
     FirebaseDatabase database;
     DatabaseReference dRef,profileRef;
     List<Order> order = new ArrayList<>();
     FirebaseRecyclerAdapter<Order, PastOrderViewHolder> adapter;
-    String userKey,phnno;
+    String userKey,date;
     Order od;
     List<Cart> cart;
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -66,23 +69,6 @@ public class PastOrders extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         userKey = user.getUid();
-
-//        dRef.child(userKey).addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                od= snapshot.child("foods").getValue(Order.class);
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        });
-//        Log.d("myTag", od.toString());
-//          cart=od.getFoods();
-//        phnno=od.getName();
-//        tx.setText(phnno);
-
         loadOrder(userKey);
 //        final TextView textView = root.findViewById(R.id.text_notifications);
 //        ordersViewModel.getText().observe(this, new Observer<String>() {
@@ -119,21 +105,50 @@ public class PastOrders extends Fragment {
                     }
                 });
                 id=adapter.getRef(position).getKey();
+                Date currentTime = Calendar.getInstance().getTime();
+                String datetime=currentTime.toString();
+                String[] words=datetime.split("\\s");
+                date=words[1]+" "+words[2]+" "+words[5];
 //                id="#"+id;
                 holder.orderid.setText("#"+id);
                 holder.cost.setText("₹"+model.getTotalcost());
-                holder.date.setText(model.getDate());
+                if(model.getDate().equals(date)){
+                    holder.date.setText("Today");
+                }
+                else {
+                    holder.date.setText(model.getDate());
+                }
                 holder.items.setText("x"+model.getitems()+" Items");
                 holder.shopname.setText(convertCodetoShop(model.getShopId()));
-                holder.receipt.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent intent = new Intent(getActivity(),Details.class);
-                        intent.putExtra("id",id);
-                        startActivity(intent);
-//                        finish();
-                    }
-                });
+//                public class ReceiptOnClickListener implements View.OnClickListener
+//                {
+//
+//                    int id;
+//                    public ReceiptOnClickListener(int id) {
+//                        this.id = id;
+//                    }
+//
+//                    @Override
+//                    public void onClick(View v)
+//                        Intent intent = new Intent(getActivity(),Details.class);
+//                        intent.putExtra("id",adapter.getRef(position).getKey());
+//                        startActivity(intent);
+//                        //read your lovely variable
+//                    }
+
+//                };
+//                ReceiptOnClickListener t=new ReceiptOnClickListener(id);
+                holder.receipt.setOnClickListener(new ReceiptOnClickListener(id,getActivity())
+
+//                    @Override
+//                    public void onClick(View view) {
+//
+//                        Intent intent = new Intent(getActivity(),Details.class);
+//                        intent.putExtra("id",id);
+//                        startActivity(intent);
+////                        finish();
+//                    }
+                );
 
             }
 
@@ -161,4 +176,22 @@ public class PastOrders extends Fragment {
             return "Juice Shop";
         return "";
     }
+    public class ReceiptOnClickListener implements View.OnClickListener
+    {
+
+        String id;
+        Context context;
+        public ReceiptOnClickListener(String id,Context context) {
+            this.id = id;
+            this.context=context;
+        }
+
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(context, Details.class);
+            intent.putExtra("id", id);
+            startActivity(intent);
+        }
+            //read your lovely variable
+        }
 }

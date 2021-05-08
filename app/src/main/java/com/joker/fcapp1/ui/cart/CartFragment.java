@@ -55,7 +55,7 @@ public class CartFragment extends Fragment {
     Button orderbtn;
     ImageView bg;
     Cart cart1;
-    String date,time;
+    String date,time,time2;
     List<Cart> cart = new ArrayList<>();
     CartAdapter adapter;
     String userKey,ShopId,FoodId,name,phnno;
@@ -95,8 +95,8 @@ public class CartFragment extends Fragment {
                 String[] words=datetime.split("\\s");
                 date=words[1]+" "+words[2]+" "+words[5];
                 time=words[3];
-                time=time.substring(0,5);
-                Order order = new Order(date,time,ShopId,total_cost.getText().toString(),"0",userKey,cart);
+                time2=time.substring(0,5);
+                Order order = new Order(date,time,ShopId,total_cost.getText().toString(),"0",userKey,cart,false);
                 dRef.child(String.valueOf(System.currentTimeMillis())).setValue(order);
                 new Database(getContext()).cleanCart();
                 alerter=true;

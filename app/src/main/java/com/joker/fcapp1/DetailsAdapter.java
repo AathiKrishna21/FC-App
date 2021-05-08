@@ -30,6 +30,7 @@ public class DetailsAdapter extends RecyclerView.Adapter<DetailsAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+
         if (carts!=null && carts.size()>0){
             Cart model=carts.get(position);
             holder.sno.setText("1");

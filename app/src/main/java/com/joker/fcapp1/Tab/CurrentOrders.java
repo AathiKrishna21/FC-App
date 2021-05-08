@@ -1,5 +1,6 @@
 package com.joker.fcapp1.Tab;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +33,8 @@ import com.joker.fcapp1.ui.orders.OrdersViewModel;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class CurrentOrders extends Fragment {
@@ -44,7 +47,7 @@ public class CurrentOrders extends Fragment {
     DatabaseReference dRef,Ref;
     List<Order> order = new ArrayList<>();
     FirebaseRecyclerAdapter<Order, OrderViewHolder> adapter;
-    String userKey,phnno;
+    String userKey,time,date,time2;
     Order od;
     List<Cart> cart;
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -63,23 +66,6 @@ public class CurrentOrders extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         userKey = user.getUid();
-
-//        dRef.child(userKey).addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                od= snapshot.child("foods").getValue(Order.class);
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        });
-//        Log.d("myTag", od.toString());
-//          cart=od.getFoods();
-//        phnno=od.getName();
-//        tx.setText(phnno);
-
         loadOrder(userKey);
 //        final TextView textView = root.findViewById(R.id.text_notifications);
 //        ordersViewModel.getText().observe(this, new Observer<String>() {
@@ -118,7 +104,7 @@ public class CurrentOrders extends Fragment {
                 orderid='#'+orderid;
                 holder.orderId.setText(orderid);
                 holder.status.setText(convertCodetoStatus(model.getStatus()));
-                holder.time.setText("Today, "+model.getTime());
+                holder.time.setText(model.getDate()+", "+model.getTime().substring(0,5));
                 final String menuId=model.getShopId();
 
                 Ref.child(menuId).child("Image").addValueEventListener(new ValueEventListener() {
@@ -134,6 +120,31 @@ public class CurrentOrders extends Fragment {
 
                     }
                 });
+//                Date currentTime = Calendar.getInstance().getTime();
+//                String datetime=currentTime.toString();
+//                String[] words=datetime.split("\\s");
+//                time=words[3].substring(6,8);
+//                int a=Integer.parseInt(time);
+                int b=Integer.parseInt(model.getTime().substring(6,8));
+                boolean c=true;
+//                Handler handler = new Handler();
+//                handler.postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        scardView.setVisibility(View.GONE);
+////                        mcardView.setVisibility(View.VISIBLE);
+//                    }
+//                }, 1400);
+//                while (c) {
+//                    Date currentTime = Calendar.getInstance().getTime();
+//                    String datetime=currentTime.toString();
+//                    String[] words=datetime.split("\\s");
+//                    int a=Integer.parseInt(words[3].substring(6,8));
+//                    if ((b + 10) % 60 == a) {
+//                        holder.status.setVisibility(View.GONE);
+//                        c = false;
+//                    }
+//                }
 //                holder.items.setText();
 //                holder.status.setText(model.getStatus());
 //                holder.total_cost.setText(model.getTotalcost());

@@ -29,9 +29,10 @@
             android:layout_height="wrap_content"
             android:src="@drawable/ic_back2"
             android:id="@+id/back_button"
-            android:paddingLeft="10dp"
-            android:backgroundTint="#0D000000"
-            />
+            android:padding="10dp"
+            android:background="@drawable/img_click"/>
+<!--            android:backgroundTint="#0D000000"-->
+
 
 <!--        <ImageView-->
 <!--            android:layout_width="50dp"-->
@@ -65,6 +66,33 @@
             android:layout_marginLeft="5dp"
             android:layout_below="@id/flayout"
             />
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmerLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/topic_menu"
+            android:layout_marginTop="5dp"
+            app:shimmer_repeat_mode="restart"
+            app:shimmer_shape="radial">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <include layout="@layout/shimmer_menu"></include>
+
+                <include layout="@layout/shimmer_menu"></include>
+
+                <include layout="@layout/shimmer_menu"></include>
+
+                <include layout="@layout/shimmer_menu"></include>
+
+                <include layout="@layout/shimmer_menu"></include>
+
+                <include layout="@layout/shimmer_menu"></include>
+            </LinearLayout>
+        </com.facebook.shimmer.ShimmerFrameLayout>
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"

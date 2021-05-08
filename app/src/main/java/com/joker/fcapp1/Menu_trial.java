@@ -7,7 +7,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DataSnapshot;
@@ -36,6 +39,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class Menu_trial extends AppCompatActivity {
 
     RecyclerView recyclerView;
@@ -44,6 +48,7 @@ public class Menu_trial extends AppCompatActivity {
     FirebaseDatabase database;
     DatabaseReference dRef,Ref;
     ImageView img,back;
+    ShimmerFrameLayout shimmerFrameLayout;
     String shopId;
     TextView shop_name;
     FirebaseRecyclerAdapter<Food, MenuViewHolder> adapter;
@@ -64,8 +69,12 @@ public class Menu_trial extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         window=this.getWindow();
         window.setStatusBarColor(this.getResources().getColor(R.color.status_bar));
+        recyclerView.setVisibility(View.GONE);
         shopId = getIntent().getStringExtra("ShopId");
         loadFoods(shopId);
+//        shimmerFrameLayout = findViewById(R.id.shimmerLayout);
+//        shimmerFrameLayout.startShimmer();
+//        new Menu_trial.LoadDataTask().execute(0);
     }
 
     private void loadFoods(final String shopId) {
@@ -93,14 +102,15 @@ public class Menu_trial extends AppCompatActivity {
 
             }
         });
+        shimmerFrameLayout = findViewById(R.id.shimmerLayout);
+        shimmerFrameLayout.startShimmer();
         adapter = new FirebaseRecyclerAdapter<Food, MenuViewHolder>(options) {
             @Override
             protected void onBindViewHolder(@NonNull final MenuViewHolder holder, final int position, @NonNull final Food model) {
-
                 Picasso.get().load(model.getImage()).into(holder.photo);
                 holder.quantity.setNumber("1");
                 holder.quantity.setVisibility(View.GONE);
-                holder.cost.setText(model.getPrice());
+                holder.cost.setText("Rs."+model.getPrice());
                 holder.name.setText(model.getName());
 
                 holder.add.setOnClickListener(new View.OnClickListener() {
@@ -118,6 +128,10 @@ public class Menu_trial extends AppCompatActivity {
                     public void onValueChange(ElegantNumberButton view, int oldValue, int newValue) {
                         Database database=new Database(getBaseContext());
                         listData=database.getCarts();
+                        if(String.valueOf(newValue).equals("0")){
+                            holder.add.setVisibility(View.VISIBLE);
+                            holder.quantity.setVisibility(View.GONE);
+                        }
                         for(Cart c: listData){
                             if(c.getProductId().equals(adapter.getRef(position).getKey())){
                                 c.setQuantity(String.valueOf(newValue));
@@ -126,11 +140,13 @@ public class Menu_trial extends AppCompatActivity {
 //                                holder.cost.setText();
                             }
                         }
+
 //                        Cart cart=listData.get(position);
 //                        cart.setQuantity(String.valueOf(newValue));
 //                        new Database(getBaseContext()).updateCart(cart);
                     }
                 });
+
             }
 
             @NonNull
@@ -140,6 +156,16 @@ public class Menu_trial extends AppCompatActivity {
                 return new MenuViewHolder(view);
             }
         };
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Do something after 5s = 5000ms
+                shimmerFrameLayout.stopShimmer();
+                recyclerView.setVisibility(View.VISIBLE);
+                shimmerFrameLayout.setVisibility(View.GONE);
+            }
+        }, 2000);
 
         adapter.startListening();
         recyclerView.setAdapter(adapter);
@@ -160,5 +186,27 @@ public class Menu_trial extends AppCompatActivity {
         else if(menuId.equals("04"))
             return "Juice Shop";
         return "";
+    }
+    class LoadDataTask extends AsyncTask<Integer, Integer, String> {
+        @Override
+        protected String doInBackground(Integer... params) {
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return "Task Completed.";
+        }
+        @Override
+        protected void onPostExecute(String result) {
+            loadFoods(shopId);
+
+        }
+        @Override
+        protected void onPreExecute() {
+        }
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+        }
     }
 }

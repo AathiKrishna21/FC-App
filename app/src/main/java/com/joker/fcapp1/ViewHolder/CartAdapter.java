@@ -80,6 +80,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartViewHolder>{
         holder.foodname.setText(listData.get(position).getProductName());
         holder.cost.setText("Rs."+String.valueOf(Integer.parseInt(listData.get(position).getPrice())*Integer.parseInt(listData.get(position).getQuantity())));
         holder.count.setNumber(listData.get(position).getQuantity());
+        holder.count.setRange(0,10);
         dRef.child(foodid).child("Image").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -96,7 +97,12 @@ public class CartAdapter extends RecyclerView.Adapter<CartViewHolder>{
             public void onValueChange(ElegantNumberButton view, int oldValue, int newValue) {
                 Cart cart=listData.get(position);
                 cart.setQuantity(String.valueOf(newValue));
-                new Database(cart1.getContext()).updateCart(cart);
+                if(String.valueOf(newValue).equals("0")){
+                    new Database(cart1.getContext()).deleteItem(cart);
+                }
+                else{
+                    new Database(cart1.getContext()).updateCart(cart);
+                }
                 holder.cost.setText("Rs."+String.valueOf(Integer.parseInt(listData.get(position).getPrice())*Integer.parseInt(listData.get(position).getQuantity())));
                 total=0;
                 for(Cart c : listData)

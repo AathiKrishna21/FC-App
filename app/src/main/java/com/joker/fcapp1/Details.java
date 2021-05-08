@@ -10,10 +10,19 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+
+import com.github.ybq.android.spinkit.SpinKitView;
+import com.github.ybq.android.spinkit.sprite.Sprite;
+import com.github.ybq.android.spinkit.style.ThreeBounce;
+import com.github.ybq.android.spinkit.style.Wave;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.joker.fcapp1.Model.Order;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -31,16 +40,19 @@ import com.joker.fcapp1.R;
 import java.util.List;
 
 public class Details extends Activity {
-//    private TableLayout mTableLayout;
     ProgressDialog mProgressBar;
     FirebaseDatabase database;
     DatabaseReference dRef,dbRef;
     List<Cart> cart;
     Order order1;
     String id;
-    TextView t1,t2;
+    Button b;
+    TextView t1,t2,menu;
+    TableRow table;
     RecyclerView detialsrcview;
     DetailsAdapter adapter;
+    SpinKitView threebounce;
+    RelativeLayout rv;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,25 +65,22 @@ public class Details extends Activity {
         int height=dm.heightPixels;
 
         getWindow().setLayout((int)(width*.8),(int)(height*.6));
-        mProgressBar = new ProgressDialog(this);
-//        hi=findViewById(R.id.hi);
-
-//<!--            android:text="price"-->
-//<!--            android:textSize="16dp"-->
-//        mTableLayout = (TableLayout) findViewById(R.id.table);
-//        mTableLayout.setStretchAllColumns(true);
+        rv=findViewById(R.id.rv);
+        b=findViewById(R.id.favo);
+        b.setVisibility(View.GONE);
+        rv.setVisibility(View.GONE);
+        threebounce = findViewById(R.id.spin_kit);
+        menu=findViewById(R.id.menu);
+        Sprite tb = new ThreeBounce();
+        threebounce.setIndeterminateDrawable(tb);
         detialsrcview=findViewById(R.id.detailsrcview);
         detialsrcview.setHasFixedSize(true);
-//        t1=findViewById(R.id.test);
-        t2=findViewById(R.id.test2);
         detialsrcview.setLayoutManager(new LinearLayoutManager(this));
+
         startLoadData();
     }
     public void startLoadData() {
-        mProgressBar.setCancelable(false);
-        mProgressBar.setMessage("Fetching Orders..");
-        mProgressBar.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        mProgressBar.show();
+        threebounce.setVisibility(View.VISIBLE);
         new LoadDataTask().execute(0);
     }
     public void loadData() {
@@ -88,7 +97,7 @@ public class Details extends Activity {
         Bundle extras = getIntent().getExtras();
 //        Cart[] target=new Cart[];
         id = extras.getString("id");
-//        t1.setText(id);
+        menu.setText(id);
         dRef.child(id).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -98,31 +107,25 @@ public class Details extends Activity {
                 adapter=new DetailsAdapter(Details.this,cart);
                 detialsrcview.setAdapter(adapter);
 //                hi.setText(order1.getName());
-
-
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
+        b.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dRef.child(id).child("favorite").setValue(true);
+            }
+        });
 
-//        cart.get(0).getProductName()
-//        Cart[] a = cart.toArray(new Cart[cart.size()]);
-//        adapter=new DetailsAdapter(this,cart);
-//        detialsrcview.setAdapter(adapter);
-//        int rows = data.length;
-//        getSupportActionBar().setTitle("Invoices (" + String.valueOf(rows) + ")");
-//        TextView textSpacer = null;
-//        mTableLayout.removeAllViews();
-        // -1 means heading row
     }
     class LoadDataTask extends AsyncTask<Integer, Integer, String> {
         @Override
         protected String doInBackground(Integer... params) {
             try {
-                Thread.sleep(2000);
+                Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -130,7 +133,9 @@ public class Details extends Activity {
         }
         @Override
         protected void onPostExecute(String result) {
-            mProgressBar.hide();
+            threebounce.setVisibility(View.GONE);
+            rv.setVisibility(View.VISIBLE);
+            b.setVisibility(View.VISIBLE);
             loadData();
         }
         @Override
@@ -140,4 +145,5 @@ public class Details extends Activity {
         protected void onProgressUpdate(Integer... values) {
         }
     }
+
 }
