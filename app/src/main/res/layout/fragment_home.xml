@@ -70,7 +70,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:adjustViewBounds="true"
-                    app:srcCompat="@drawable/fc2" />
+                    app:srcCompat="@drawable/fc4" />
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
@@ -114,7 +114,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:adjustViewBounds="true"
-                    app:srcCompat="@drawable/fc4" />
+                    app:srcCompat="@drawable/fc2" />
             </androidx.cardview.widget.CardView>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

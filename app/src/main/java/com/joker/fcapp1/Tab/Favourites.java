@@ -7,11 +7,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -121,11 +123,14 @@ public class Favourites extends Fragment {
                     date=words[1]+" "+words[2]+" "+words[5];
                     time=words[3];
                     time2=time.substring(0,5);
-                    holder.orderid.setText("#" + id);
+//                    holder.orderid.setText("#" + id);
                     holder.cost.setText("₹" + model.getTotalcost());
                     holder.items.setText("x" + model.getitems() + " Items");
                     holder.item.setText(item);
                     holder.shopname.setText(convertCodetoShop(model.getShopId()));
+                    holder.tb.setChecked(true);
+                    holder.tb.setBackgroundDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_heartfill));
+                    holder.tb.setOnCheckedChangeListener(new Tlistener(holder));
                     holder.receipt.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -207,5 +212,21 @@ public class Favourites extends Fragment {
             public void onCancelled(DatabaseError databaseError) {}
         };
         fromPath.addListenerForSingleValueEvent(valueEventListener);
+    }
+    class Tlistener implements CompoundButton.OnCheckedChangeListener{
+        FavoriteViewHolder holder;
+        public Tlistener(FavoriteViewHolder holder){
+            this.holder=holder;
+        }
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            if (isChecked) {
+                holder.tb.setBackgroundDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_heartfill));
+            }
+            else{
+                holder.tb.setBackgroundDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_heart));
+                dRef.child(id).child("favorite").setValue(false);
+            }
+        }
     }
 }

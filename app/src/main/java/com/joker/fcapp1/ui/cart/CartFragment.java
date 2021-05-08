@@ -159,7 +159,7 @@ public class CartFragment extends Fragment {
         return root;
     }
 
-    private void loadCart() {
+    public void loadCart() {
         cart = new Database(this.getContext()).getCarts();
         adapter = new CartAdapter(cart,this);
         if(cart.isEmpty()){

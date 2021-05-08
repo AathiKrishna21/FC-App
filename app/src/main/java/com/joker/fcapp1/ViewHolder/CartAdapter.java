@@ -99,6 +99,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartViewHolder>{
                 cart.setQuantity(String.valueOf(newValue));
                 if(String.valueOf(newValue).equals("0")){
                     new Database(cart1.getContext()).deleteItem(cart);
+                    cart1.loadCart();
                 }
                 else{
                     new Database(cart1.getContext()).updateCart(cart);

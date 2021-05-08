@@ -11,11 +11,13 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.github.ybq.android.spinkit.SpinKitView;
 import com.github.ybq.android.spinkit.sprite.Sprite;
@@ -26,6 +28,7 @@ import com.google.android.gms.tasks.Task;
 import com.joker.fcapp1.Model.Order;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.joker.fcapp1.DetailsAdapter;
@@ -46,6 +49,7 @@ public class Details extends Activity {
     List<Cart> cart;
     Order order1;
     String id;
+    static boolean favo;
     Button b;
     TextView t1,t2,menu;
     TableRow table;
@@ -53,6 +57,7 @@ public class Details extends Activity {
     DetailsAdapter adapter;
     SpinKitView threebounce;
     RelativeLayout rv;
+    ToggleButton toggleButton;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,6 +81,15 @@ public class Details extends Activity {
         detialsrcview=findViewById(R.id.detailsrcview);
         detialsrcview.setHasFixedSize(true);
         detialsrcview.setLayoutManager(new LinearLayoutManager(this));
+        toggleButton = (ToggleButton) findViewById(R.id.myToggleButton);
+        toggleButton.setChecked(false);
+        if(favo){
+            toggleButton.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_heartfill));
+        }
+        else{
+            toggleButton.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_heart));
+        }
+        toggleButton.setVisibility(View.GONE);
 
         startLoadData();
     }
@@ -97,13 +111,15 @@ public class Details extends Activity {
         Bundle extras = getIntent().getExtras();
 //        Cart[] target=new Cart[];
         id = extras.getString("id");
-        menu.setText(id);
+//        menu.setText(id);
+
         dRef.child(id).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 order1 = snapshot.getValue(Order.class);
 //                t2.setText(order1.getShopId());
                 cart = order1.getFoods();
+                favo=order1.isFavorite();
                 adapter=new DetailsAdapter(Details.this,cart);
                 detialsrcview.setAdapter(adapter);
 //                hi.setText(order1.getName());
@@ -113,12 +129,14 @@ public class Details extends Activity {
 
             }
         });
-        b.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dRef.child(id).child("favorite").setValue(true);
-            }
-        });
+//        b.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                dRef.child(id).child("favorite").setValue(true);
+//            }
+//        });
+//        menu.setText(String.valueOf(favo));
+        toggleButton.setOnCheckedChangeListener(new Tlistener(favo));
 
     }
     class LoadDataTask extends AsyncTask<Integer, Integer, String> {
@@ -135,7 +153,8 @@ public class Details extends Activity {
         protected void onPostExecute(String result) {
             threebounce.setVisibility(View.GONE);
             rv.setVisibility(View.VISIBLE);
-            b.setVisibility(View.VISIBLE);
+//            b.setVisibility(View.VISIBLE);
+            toggleButton.setVisibility(View.VISIBLE);
             loadData();
         }
         @Override
@@ -143,6 +162,23 @@ public class Details extends Activity {
         }
         @Override
         protected void onProgressUpdate(Integer... values) {
+        }
+    }
+    class Tlistener implements CompoundButton.OnCheckedChangeListener{
+        boolean favo;
+        public Tlistener(boolean favo){
+            this.favo=favo;
+        }
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            if (favo||isChecked) {
+                toggleButton.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_heartfill));
+                dRef.child(id).child("favorite").setValue(true);
+            }
+            else{
+                toggleButton.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_heart));
+                dRef.child(id).child("favorite").setValue(false);
+            }
         }
     }
 

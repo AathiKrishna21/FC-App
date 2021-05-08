@@ -33,7 +33,7 @@ public class DetailsAdapter extends RecyclerView.Adapter<DetailsAdapter.ViewHold
 
         if (carts!=null && carts.size()>0){
             Cart model=carts.get(position);
-            holder.sno.setText("1");
+            holder.sno.setText(String.valueOf(position+1));
             holder.fname.setText(model.getProductName());
             holder.cost.setText(model.getPrice());
             holder.quantity.setText(model.getQuantity());
