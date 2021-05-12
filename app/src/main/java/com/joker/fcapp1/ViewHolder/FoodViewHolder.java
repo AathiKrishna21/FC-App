@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.joker.fcapp1.Interface.ItemClickListener;
 import com.joker.fcapp1.R;
 
+
 public class FoodViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
     public ImageView food_image;
 

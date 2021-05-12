@@ -51,7 +51,7 @@ public class Details extends Activity {
     String id;
     static boolean favo;
     Button b;
-    TextView t1,t2,menu;
+    TextView t1,shopname,menu;
     TableRow table;
     RecyclerView detialsrcview;
     DetailsAdapter adapter;
@@ -71,11 +71,12 @@ public class Details extends Activity {
 
         getWindow().setLayout((int)(width*.8),(int)(height*.6));
         rv=findViewById(R.id.rv);
-        b=findViewById(R.id.favo);
-        b.setVisibility(View.GONE);
+//        b=findViewById(R.id.favo);
+//        b.setVisibility(View.GONE);
         rv.setVisibility(View.GONE);
         threebounce = findViewById(R.id.spin_kit);
-        menu=findViewById(R.id.menu);
+        menu=findViewById(R.id.id);
+        shopname=findViewById(R.id.shopname);
         Sprite tb = new ThreeBounce();
         threebounce.setIndeterminateDrawable(tb);
         detialsrcview=findViewById(R.id.detailsrcview);
@@ -111,13 +112,13 @@ public class Details extends Activity {
         Bundle extras = getIntent().getExtras();
 //        Cart[] target=new Cart[];
         id = extras.getString("id");
-//        menu.setText(id);
+        menu.setText("#"+id);
 
         dRef.child(id).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 order1 = snapshot.getValue(Order.class);
-//                t2.setText(order1.getShopId());
+                shopname.setText(convertCodetoShop(order1.getShopId()));
                 cart = order1.getFoods();
                 favo=order1.isFavorite();
                 adapter=new DetailsAdapter(Details.this,cart);
@@ -180,6 +181,17 @@ public class Details extends Activity {
                 dRef.child(id).child("favorite").setValue(false);
             }
         }
+    }
+    private String convertCodetoShop(String menuId) {
+        if(menuId.equals("01"))
+            return "Lakshmi Bhavan";
+        else if(menuId.equals("02"))
+            return "Idly Italy";
+        else if(menuId.equals("03"))
+            return "Chat Shop";
+        else if(menuId.equals("04"))
+            return "Juice Shop";
+        return "";
     }
 
 }

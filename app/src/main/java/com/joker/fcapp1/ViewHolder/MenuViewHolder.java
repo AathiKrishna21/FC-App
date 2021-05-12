@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
 import com.joker.fcapp1.R;
+import com.squareup.picasso.Picasso;
 
 public class MenuViewHolder extends RecyclerView.ViewHolder {
     public TextView name,cost;

@@ -36,6 +36,8 @@ import com.joker.fcapp1.ViewHolder.MenuViewHolder;
 import com.joker.fcapp1.ui.home.HomeFragment;
 import com.squareup.picasso.Picasso;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,10 +51,12 @@ public class Menu_trial extends AppCompatActivity {
     DatabaseReference dRef,Ref;
     ImageView img,back;
     ShimmerFrameLayout shimmerFrameLayout;
-    String shopId;
     TextView shop_name;
     FirebaseRecyclerAdapter<Food, MenuViewHolder> adapter;
     Window window;
+    String shopId,FoodId;
+    List<Cart> cart;
+    Cart cart1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +75,8 @@ public class Menu_trial extends AppCompatActivity {
         window.setStatusBarColor(this.getResources().getColor(R.color.status_bar));
         recyclerView.setVisibility(View.GONE);
         shopId = getIntent().getStringExtra("ShopId");
+        shimmerFrameLayout = findViewById(R.id.shimmerLayout);
+        shimmerFrameLayout.startShimmer();
         loadFoods(shopId);
 //        shimmerFrameLayout = findViewById(R.id.shimmerLayout);
 //        shimmerFrameLayout.startShimmer();
@@ -102,16 +108,51 @@ public class Menu_trial extends AppCompatActivity {
 
             }
         });
-        shimmerFrameLayout = findViewById(R.id.shimmerLayout);
-        shimmerFrameLayout.startShimmer();
+
         adapter = new FirebaseRecyclerAdapter<Food, MenuViewHolder>(options) {
             @Override
             protected void onBindViewHolder(@NonNull final MenuViewHolder holder, final int position, @NonNull final Food model) {
-                Picasso.get().load(model.getImage()).into(holder.photo);
-                holder.quantity.setNumber("1");
-                holder.quantity.setVisibility(View.GONE);
+                cart = new Database(getBaseContext()).getCarts();
                 holder.cost.setText("Rs."+model.getPrice());
                 holder.name.setText(model.getName());
+                holder.add.setVisibility(View.VISIBLE);
+                holder.quantity.setNumber("1");
+                Picasso.get().load(model.getImage()).into(holder.photo);
+                if(!cart.isEmpty()) {
+                    cart1=cart.get(0);
+                    for(Cart c : cart) {
+                        if (c.getProductId().equals(adapter.getRef(position).getKey())) {
+                            holder.cost.setText(adapter.getRef(position).getKey());
+                            holder.add.setVisibility(View.GONE);
+                            holder.quantity.setVisibility(View.VISIBLE);
+                            holder.quantity.setNumber(c.getQuantity());
+                        }
+                    }
+                    FoodId = cart1.getProductId();
+                    dRef.child(FoodId).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            String ShopId = snapshot.child("MenuId").getValue().toString();
+                            if(!shopId.equals(ShopId)){
+                                holder.add.setVisibility(View.GONE);
+                                holder.quantity.setVisibility(View.GONE);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+                }
+                else{
+                    Picasso.get().load(model.getImage()).into(holder.photo);
+                    holder.quantity.setNumber("1");
+                    holder.quantity.setVisibility(View.GONE);
+                }
+
+
+
 
                 holder.add.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -156,19 +197,19 @@ public class Menu_trial extends AppCompatActivity {
                 return new MenuViewHolder(view);
             }
         };
+        recyclerView.setAdapter(adapter);
+        adapter.startListening();
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                // Do something after 5s = 5000ms
+                shimmerFrameLayout.setVisibility(View.GONE);
                 shimmerFrameLayout.stopShimmer();
                 recyclerView.setVisibility(View.VISIBLE);
-                shimmerFrameLayout.setVisibility(View.GONE);
             }
-        }, 2000);
+        }, 1200);
 
-        adapter.startListening();
-        recyclerView.setAdapter(adapter);
+
     }
 
     @Override
@@ -176,7 +217,8 @@ public class Menu_trial extends AppCompatActivity {
         Intent intent=new Intent(Menu_trial.this,Main2Activity.class);
         startActivity(intent);
     }
-    private String convertCodetoShop(String menuId) {
+    @NotNull
+    private String convertCodetoShop(@NotNull String menuId) {
         if(menuId.equals("01"))
             return "Lakshmi Bhavan";
         else if(menuId.equals("02"))
