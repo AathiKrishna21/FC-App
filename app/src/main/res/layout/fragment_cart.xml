@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:scrollbars="vertical"
         android:layout_below="@+id/imageView7"
-        android:layout_above="@id/cart_relative"/>
+        android:layout_above="@+id/cart_relative"/>
 
 
     <RelativeLayout
@@ -36,38 +36,66 @@
         android:layout_alignParentBottom="true"
         android:background="@color/orange"
         android:id="@+id/cart_relative">
-        <TextView
-            android:id="@+id/total_cost"
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Total : "
-            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            android:textSize="17dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="140dp"/>
+            android:layout_centerHorizontal="true"
+            android:id="@+id/totalrl">
+            <TextView
+                android:id="@+id/total_cost"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TOTAL : "
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textSize="17dp"
+                android:layout_marginTop="10dp" />
 
-        <TextView
-            android:id="@+id/amount"
-            android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/total_cost"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textSize="17dp"
+                android:layout_marginTop="10dp"
+                android:text="1000"/>
+        </RelativeLayout>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@+id/total_cost"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            android:textSize="17dp"
             android:layout_marginTop="10dp"
-            android:text="1000"/>
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:layout_centerHorizontal="true"
+            app:cardCornerRadius="5dp"
+            app:cardElevation="5dp"
+            android:layout_below="@+id/totalrl"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/totalrl">
 
-    <Button
-        android:id="@+id/button3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/total_cost"
-        android:text="Place Order"
-        android:layout_marginTop="10dp"/>
+
+            <Button
+                android:id="@+id/button3"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:background="#5151A6"
+                android:elevation="5dp"
+                android:backgroundTint="@color/white"
+                android:text="PLACE ORDER"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:textColor="@color/orange"
+                android:textStyle="bold|italic"
+                android:textSize="14dp" />
+        </androidx.cardview.widget.CardView>
+
     </RelativeLayout>
 
 </RelativeLayout>

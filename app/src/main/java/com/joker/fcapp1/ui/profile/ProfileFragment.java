@@ -36,6 +36,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.joker.fcapp1.Main2Activity;
 import com.joker.fcapp1.MainActivity;
+import com.joker.fcapp1.Model.Flag;
 import com.joker.fcapp1.Model.User;
 import com.joker.fcapp1.Model.Username;
 import com.joker.fcapp1.R;
@@ -59,6 +60,7 @@ public class ProfileFragment extends Fragment{
     static String imgurl,userKey;
     SpinKitView waveview;
     CardView mcardView,scardView;
+    Flag flag;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference dbRef = database.getReference("Users");
     public View onCreateView(@NonNull final LayoutInflater inflater,
@@ -83,6 +85,10 @@ public class ProfileFragment extends Fragment{
         waveview = root.findViewById(R.id.spin_kit);
         Sprite wave = new Wave();
         waveview.setIndeterminateDrawable(wave);
+        if(Flag.getFlag()==1){
+            scardView.setVisibility(View.GONE);
+            mcardView.setVisibility(View.VISIBLE);
+        }
         /*
         cpass.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -129,16 +135,20 @@ public class ProfileFragment extends Fragment{
 //                profileName.setVisibility(View.VISIBLE);
 //                profilephnno.setVisibility(View.VISIBLE);
 //                signoutbtn.setVisibility(View.VISIBLE);
-                Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        scardView.setVisibility(View.GONE);
-                        mcardView.setVisibility(View.VISIBLE);
-                    }
-                }, 1400);
+
+                if(Flag.getFlag()==0) {
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            scardView.setVisibility(View.GONE);
+                            mcardView.setVisibility(View.VISIBLE);
+                        }
+                    }, 1400);
+                    Flag.setFlag(1);
 
 //                waveview.setVisibility(View.GONE);
+                }
             }
 
             @Override
