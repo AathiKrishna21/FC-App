@@ -69,15 +69,15 @@
             android:layout_marginTop="5dp"
             android:layout_marginLeft="20dp"/>
         <ToggleButton
-            android:layout_width="45dp"
-            android:layout_height="45dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:id="@+id/myToggleButton"
             android:text="Favorite"
             android:layout_centerHorizontal="true"
             android:textOn=""
             android:textOff=""
             android:layout_alignParentRight="true"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="15dp"
             android:layout_marginRight="20dp"/>
         <info.hoang8f.widget.FButton
             android:id="@+id/btnreceipt"

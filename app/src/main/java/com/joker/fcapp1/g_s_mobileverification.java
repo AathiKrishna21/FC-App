@@ -96,7 +96,7 @@ public class g_s_mobileverification extends AppCompatActivity {
                                     dialog.dismiss();
                                     dbRef.child(user.getUid()).child("Phonenumber").setValue(phnnum);
                                     Toast.makeText(g_s_mobileverification.this,"Verification Successful!",Toast.LENGTH_SHORT).show();
-                                    startActivity(new Intent(g_s_mobileverification.this, SignInActivity.class));
+                                    startActivity(new Intent(g_s_mobileverification.this, Main2Activity.class));
                                     finish();
 
                                 } else {
@@ -130,6 +130,7 @@ public class g_s_mobileverification extends AppCompatActivity {
                 Toast.makeText(g_s_mobileverification.this,"Code sent",Toast.LENGTH_SHORT).show();
                 genotp.setVisibility(View.GONE);
                 enterotp.setVisibility(View.VISIBLE);
+                enterotp.requestFocus();
                 signin.setVisibility(View.VISIBLE);
             }
         };

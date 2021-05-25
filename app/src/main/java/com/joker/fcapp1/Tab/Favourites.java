@@ -114,7 +114,12 @@ public class Favourites extends Fragment {
                     });
                     cart=model.getFoods();
                     for(Cart c: cart){
-                        item+=c.getProductName()+" x "+c.getQuantity()+" , ";
+                        if(c==cart.get(cart.size()-1)){
+                            item+=c.getProductName()+" x "+c.getQuantity();
+                        }
+                        else {
+                            item+=c.getProductName()+" x "+c.getQuantity()+" , ";
+                        }
                     }
                     id = adapter.getRef(position).getKey();
                     Date currentTime = Calendar.getInstance().getTime();

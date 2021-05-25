@@ -17,6 +17,8 @@
         android:inputType="number"
         android:textSize="24sp"
         android:textStyle="italic"
+        android:backgroundTint="#b3b3b1"
+        android:textCursorDrawable="@drawable/cursor_color"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editText5" />
@@ -67,6 +69,8 @@
         android:inputType="phone"
         android:textSize="24sp"
         android:textStyle="italic"
+        android:backgroundTint="#b3b3b1"
+        android:textCursorDrawable="@drawable/cursor_color"
         app:layout_constraintBottom_toTopOf="@+id/editText3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

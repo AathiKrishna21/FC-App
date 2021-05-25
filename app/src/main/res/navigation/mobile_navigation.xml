@@ -11,9 +11,9 @@
         android:name="com.joker.fcapp1.ui.home.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home">
-            <action
-                android:id="@+id/action_fragment1_to_fragment3"
-                app:destination="@id/navigation_orders"/>
+        <action
+            android:id="@+id/action_fragment1_to_fragment3"
+            app:destination="@id/navigation_orders"/>
     </fragment>
 
     <fragment
@@ -26,8 +26,12 @@
         android:id="@+id/navigation_orders"
         android:name="com.joker.fcapp1.ui.orders.OrdersFragment"
         android:label="@string/title_orders"
-        tools:layout="@layout/fragment_orders" />
-
+        tools:layout="@layout/fragment_orders">
+        <action
+            android:id="@+id/action_fragment3_to_fragment1"
+            app:destination="@id/navigation_home"
+            />
+    </fragment>
     <fragment
         android:id="@+id/navigation_profile"
         android:name="com.joker.fcapp1.ui.profile.ProfileFragment"

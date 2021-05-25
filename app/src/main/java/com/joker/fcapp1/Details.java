@@ -28,6 +28,7 @@ import com.google.android.gms.tasks.Task;
 import com.joker.fcapp1.Model.Order;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -49,6 +50,7 @@ public class Details extends Activity {
     List<Cart> cart;
     Order order1;
     String id;
+    CardView cd;
     static boolean favo;
     Button b;
     TextView t1,shopname,menu;
@@ -68,7 +70,7 @@ public class Details extends Activity {
         getWindowManager().getDefaultDisplay().getMetrics(dm);
         int width=dm.widthPixels;
         int height=dm.heightPixels;
-
+        cd=findViewById(R.id.cardView9);
         getWindow().setLayout((int)(width*.8),(int)(height*.6));
         rv=findViewById(R.id.rv);
 //        b=findViewById(R.id.favo);
@@ -84,13 +86,9 @@ public class Details extends Activity {
         detialsrcview.setLayoutManager(new LinearLayoutManager(this));
         toggleButton = (ToggleButton) findViewById(R.id.myToggleButton);
         toggleButton.setChecked(false);
-        if(favo){
-            toggleButton.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_heartfill));
-        }
-        else{
-            toggleButton.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_heart));
-        }
+        toggleButton.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_heart));
         toggleButton.setVisibility(View.GONE);
+        cd.setVisibility(View.GONE);
 
         startLoadData();
     }
@@ -121,6 +119,12 @@ public class Details extends Activity {
                 shopname.setText(convertCodetoShop(order1.getShopId()));
                 cart = order1.getFoods();
                 favo=order1.isFavorite();
+                if(favo){
+                    toggleButton.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_heartfill));
+                }
+                else{
+                    toggleButton.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_heart));
+                }
                 adapter=new DetailsAdapter(Details.this,cart);
                 detialsrcview.setAdapter(adapter);
 //                hi.setText(order1.getName());
@@ -137,14 +141,14 @@ public class Details extends Activity {
 //            }
 //        });
 //        menu.setText(String.valueOf(favo));
-        toggleButton.setOnCheckedChangeListener(new Tlistener(favo));
+        toggleButton.setOnCheckedChangeListener(new Tlistener(favo,id));
 
     }
     class LoadDataTask extends AsyncTask<Integer, Integer, String> {
         @Override
         protected String doInBackground(Integer... params) {
             try {
-                Thread.sleep(1000);
+                Thread.sleep(1500);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -156,6 +160,7 @@ public class Details extends Activity {
             rv.setVisibility(View.VISIBLE);
 //            b.setVisibility(View.VISIBLE);
             toggleButton.setVisibility(View.VISIBLE);
+            cd.setVisibility(View.VISIBLE);
             loadData();
         }
         @Override
@@ -167,8 +172,10 @@ public class Details extends Activity {
     }
     class Tlistener implements CompoundButton.OnCheckedChangeListener{
         boolean favo;
-        public Tlistener(boolean favo){
+        String id;
+        public Tlistener(boolean favo,String id){
             this.favo=favo;
+            this.id=id;
         }
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

@@ -4,12 +4,17 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.NavController;
+import androidx.navigation.NavOptions;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -29,6 +34,7 @@ import com.joker.fcapp1.Model.Cart;
 import com.joker.fcapp1.Model.Order;
 import com.joker.fcapp1.R;
 import com.joker.fcapp1.ViewHolder.OrderViewHolder;
+import com.joker.fcapp1.ui.home.HomeFragment;
 import com.joker.fcapp1.ui.orders.OrdersViewModel;
 import com.squareup.picasso.Picasso;
 
@@ -40,7 +46,8 @@ import java.util.List;
 public class CurrentOrders extends Fragment {
     private OrdersViewModel ordersViewModel;
     RecyclerView recyclerView;
-    ImageView bg;
+    RelativeLayout bg;
+    Button browse;
     RecyclerView.LayoutManager layoutManager;
     TextView tx;
     FirebaseDatabase database;
@@ -61,11 +68,24 @@ public class CurrentOrders extends Fragment {
         Ref = database.getReference("Shops");
         recyclerView = root.findViewById(R.id.ordesrrecyclerview);
         bg=root.findViewById(R.id.bg_img);
+        browse=root.findViewById(R.id.button);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this.getContext());
         recyclerView.setLayoutManager(layoutManager);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         userKey = user.getUid();
+        browse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                NavController navController = NavHostFragment.findNavController(getParentFragment());
+                navController.navigate(
+                        R.id.action_fragment3_to_fragment1,
+                        null,
+                        new NavOptions.Builder()
+                                .build()
+                );
+            }
+        });
         loadOrder(userKey);
 //        final TextView textView = root.findViewById(R.id.text_notifications);
 //        ordersViewModel.getText().observe(this, new Observer<String>() {

@@ -19,6 +19,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.SignInMethodQueryResult;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -58,7 +59,7 @@ public class SignUpActivity extends AppCompatActivity {
                 email = edtemail.getText().toString();
                 password=edtpassword.getText().toString();
                 repassword=edtrepassword.getText().toString();
-                String split[]=email.split("@");
+                final String split[]=email.split("@");
                 String domain=split[1];
 
                 if(name.isEmpty()){
@@ -77,52 +78,87 @@ public class SignUpActivity extends AppCompatActivity {
                     edtrepassword.setError("Re type Your Password");
                     edtrepassword.requestFocus();
                 }
-                else if(domain!="student.tce.edu" || domain!="tce.edu"){
+                else if(!domain.equals("student.tce.edu") && !domain.equals("tce.edu")){
                     edtemail.setError("Use college mailId");
                     edtemail.requestFocus();
                 }
                 else{
-                    if(password.equals(repassword)) {
-                        username = split[0];
-                        Username u1 = new Username();
-                        u1.setUsername(username);
+                    firebaseAuth.fetchSignInMethodsForEmail(email)
+                            .addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
+
+                                    boolean isNewUser = task.getResult().getSignInMethods().isEmpty();
+
+                                    if (isNewUser) {
+                                        if(password.equals(repassword)) {
+                                            username = split[0];
+                                            Username u1 = new Username();
+                                            u1.setUsername(username);
 //                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 //                        userKey = user.getUid();
 //                        dbRef.child(userKey).child("Name").setValue(name);
-                            firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(SignUpActivity.this, new OnCompleteListener<AuthResult>() {
-                                @Override
-                                public void onComplete(@NonNull Task<AuthResult> task) {
-                                    if (!task.isSuccessful()) {
-                                        Toast.makeText(SignUpActivity.this.getApplicationContext(),
-                                                "SignUp unsuccessful: " + task.getException().getMessage(),
-                                                Toast.LENGTH_SHORT).show();
+                                            firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(SignUpActivity.this, new OnCompleteListener<AuthResult>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                                    if (!task.isSuccessful()) {
+                                                        Toast.makeText(SignUpActivity.this.getApplicationContext(),
+                                                                "SignUp unsuccessful: " + task.getException().getMessage(),
+                                                                Toast.LENGTH_SHORT).show();
+                                                    } else {
+                                                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                                                        userKey = user.getUid();
+                                                        dbRef.child(userKey).child("Name").setValue(name);
+                                                        dbRef.child(userKey).child("Email").setValue(email);
+                                                        dbRef.child(userKey).child("ProfileUrl").setValue("");
+
+
+                                                        startActivity(new Intent(SignUpActivity.this, g_s_mobileverification.class));
+                                                    }
+                                                }
+                                            });
+
+                                        }
+                                        else{
+                                            edtrepassword.setText("");
+                                            edtrepassword.setText("");
+                                            edtpassword.setError("Password does't match");
+                                            edtpassword.requestFocus();
+                                        }
                                     } else {
-                                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                                        userKey = user.getUid();
-                                        dbRef.child(userKey).child("Name").setValue(name);
-                                        dbRef.child(userKey).child("Email").setValue(email);
-                                        dbRef.child(userKey).child("ProfileUrl").setValue("https://images.app.goo.gl/QeBW9yTr79wquSQz6");
-
-
-                                        startActivity(new Intent(SignUpActivity.this, g_s_mobileverification.class));
+                                        Toast.makeText(SignUpActivity.this, "User Already Registered!!",Toast.LENGTH_SHORT).show();
+                                        Intent intent=new Intent(SignUpActivity.this,MainActivity.class);
+                                        startActivity(intent);
                                     }
+
                                 }
                             });
 
-                    }
-                   else{
-                       edtrepassword.setText("");
-                       edtrepassword.setText("");
-                        edtpassword.setError("Password does't match");
-                        edtpassword.requestFocus();
-                    }
                 }
 
             }
         });
     }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
     }
+//    public interface OnEmailCheckListener {
+//        void onSuccess(boolean isRegistered);
+//    }
+//    public void isCheckEmail(final String email,final OnEmailCheckListener listener){
+//        firebaseAuth.fetchProvidersForEmail(email).addOnCompleteListener(new OnCompleteListener<ProviderQueryResult>()
+//        {
+//            @Override
+//            public void onComplete(@NonNull Task<ProviderQueryResult> task)
+//            {
+//                boolean check = !task.getResult().getProviders().isEmpty();
+//
+//                listener.onSuccess(check);
+//
+//            }
+//        });
+//
+//    }
 }

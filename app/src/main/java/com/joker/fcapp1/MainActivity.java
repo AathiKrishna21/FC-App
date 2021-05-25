@@ -30,6 +30,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.joker.fcapp1.Model.User;
 
 public class MainActivity extends AppCompatActivity {
     Window window;
@@ -91,9 +92,16 @@ public class MainActivity extends AppCompatActivity {
         //if the user is already signed in
         //we will close this activity
         //and take the user to profile activity
-        if (mAuth.getCurrentUser() != null ) {
-            startActivity(new Intent(this, Main2Activity.class));
-            finish();
+        FirebaseUser user=mAuth.getCurrentUser();
+        if (user != null ) {
+            if(user.getPhoneNumber()!="") {
+                startActivity(new Intent(this, Main2Activity.class));
+                finish();
+            }
+            else{
+                startActivity(new Intent(this, g_s_mobileverification.class));
+                finish();
+            }
         }
 
     }

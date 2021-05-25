@@ -29,14 +29,14 @@
                 android:layout_marginTop="10dp"
                 android:textStyle="bold"
                 />
-                <TextView
-                    android:gravity="center"
-                    android:id="@+id/id"
-                    android:text="Menu"
-                    android:textSize="15dp"
-                    android:layout_marginTop="10dp"
-                    android:textStyle="bold"
-                    />
+            <TextView
+                android:gravity="center"
+                android:id="@+id/id"
+                android:text="Menu"
+                android:textSize="15dp"
+                android:layout_marginTop="10dp"
+                android:textStyle="bold"
+                />
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -121,14 +121,14 @@
         app:cardCornerRadius="100dp"
         app:cardElevation="15dp">
 
-    <ToggleButton
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:id="@+id/myToggleButton"
-        android:text="Favorite"
-        android:layout_gravity="center"
-        android:textOn=""
-        android:textOff=""/>
-</androidx.cardview.widget.CardView>
+        <ToggleButton
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/myToggleButton"
+            android:text="Favorite"
+            android:layout_gravity="center"
+            android:textOn=""
+            android:textOff=""/>
+    </androidx.cardview.widget.CardView>
 
-    </RelativeLayout>
+</RelativeLayout>

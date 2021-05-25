@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#ffffff"
     tools:context="com.joker.fcapp1.ui.cart.CartFragment">
     <ImageView
         android:id="@+id/imageView7"
@@ -14,12 +15,12 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/cart1" />
+        app:srcCompat="@drawable/title2" />
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/bg_img"
-        android:src="@drawable/empty_cart"/>
+        android:src="@drawable/empty"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/cartrecyclerview"

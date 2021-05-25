@@ -166,7 +166,7 @@ public class proffrontpage extends AppCompatActivity {
                                         finish();
                                     }
                                     else{
-                                        startActivity(new Intent(proffrontpage.this,g_p_mobileverification.class));
+                                        startActivity(new Intent(proffrontpage.this,g_s_mobileverification.class));
                                         finish();
                                     }
 

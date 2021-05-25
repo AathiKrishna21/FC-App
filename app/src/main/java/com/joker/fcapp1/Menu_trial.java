@@ -31,6 +31,7 @@ import com.joker.fcapp1.Database.Database;
 import com.joker.fcapp1.Interface.ItemClickListener;
 import com.joker.fcapp1.Model.Cart;
 import com.joker.fcapp1.Model.Food;
+import com.joker.fcapp1.Model.SFlag;
 import com.joker.fcapp1.ViewHolder.FoodViewHolder;
 import com.joker.fcapp1.ViewHolder.MenuViewHolder;
 import com.joker.fcapp1.ui.home.HomeFragment;
@@ -76,7 +77,12 @@ public class Menu_trial extends AppCompatActivity {
         recyclerView.setVisibility(View.GONE);
         shopId = getIntent().getStringExtra("ShopId");
         shimmerFrameLayout = findViewById(R.id.shimmerLayout);
-        shimmerFrameLayout.startShimmer();
+        if(SFlag.getSflag()==0)
+            shimmerFrameLayout.startShimmer();
+        if(SFlag.getSflag()==1) {
+            shimmerFrameLayout.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.VISIBLE);
+        }
         loadFoods(shopId);
 //        shimmerFrameLayout = findViewById(R.id.shimmerLayout);
 //        shimmerFrameLayout.startShimmer();
@@ -86,8 +92,8 @@ public class Menu_trial extends AppCompatActivity {
     private void loadFoods(final String shopId) {
         FirebaseRecyclerOptions<Food> options =
                 new FirebaseRecyclerOptions.Builder<Food>()
-                    .setQuery(dRef.orderByChild("MenuId").equalTo(shopId),Food.class)
-                    .build();
+                        .setQuery(dRef.orderByChild("MenuId").equalTo(shopId),Food.class)
+                        .build();
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -122,7 +128,7 @@ public class Menu_trial extends AppCompatActivity {
                     cart1=cart.get(0);
                     for(Cart c : cart) {
                         if (c.getProductId().equals(adapter.getRef(position).getKey())) {
-                            holder.cost.setText(adapter.getRef(position).getKey());
+                            //holder.cost.setText(adapter.getRef(position).getKey());
                             holder.add.setVisibility(View.GONE);
                             holder.quantity.setVisibility(View.VISIBLE);
                             holder.quantity.setNumber(c.getQuantity());
@@ -199,17 +205,19 @@ public class Menu_trial extends AppCompatActivity {
         };
         recyclerView.setAdapter(adapter);
         adapter.startListening();
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                shimmerFrameLayout.setVisibility(View.GONE);
-                shimmerFrameLayout.stopShimmer();
-                recyclerView.setVisibility(View.VISIBLE);
-            }
-        }, 1200);
+        if(SFlag.getSflag()==0) {
+            final Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    shimmerFrameLayout.setVisibility(View.GONE);
+                    shimmerFrameLayout.stopShimmer();
+                    recyclerView.setVisibility(View.VISIBLE);
+                    SFlag.setSflag(1);
+                }
+            }, 1200);
 
-
+        }
     }
 
     @Override
