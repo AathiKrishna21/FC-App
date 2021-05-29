@@ -21,9 +21,15 @@ import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.joker.fcapp1.Menu_trial;
+import com.joker.fcapp1.Model.Token;
 import com.joker.fcapp1.R;
 import com.joker.fcapp1.ui.cart.CartFragment;
 import com.joker.fcapp1.ui.orders.OrdersFragment;
@@ -43,8 +49,18 @@ public class HomeFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
         ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
         Intent intent=getActivity().getIntent();
-
         Bundle extras=intent.getExtras();
+        String flag=intent.getStringExtra("uid");
+        if(flag!=null){
+            intent.removeExtra("uid");
+            NavController navController = NavHostFragment.findNavController(HomeFragment.this);
+            navController.navigate(
+                    R.id.action_fragment1_to_fragment3,
+                    null,
+                    new NavOptions.Builder()
+                            .build()
+            );
+        }
         if(extras!=null){
             if(extras.containsKey("Alerter")){
                 boolean code = extras.getBoolean("Alerter",false);
@@ -71,8 +87,8 @@ public class HomeFragment extends Fragment {
                             .enableSwipeToDismiss()
                             .show();
                     intent.removeExtra("Alerter");
+                }
             }
-        }
 
 
         }
@@ -125,7 +141,24 @@ public class HomeFragment extends Fragment {
                 });
             }
         });
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        String token=task.getResult();
+                        updateTokenToFirebase(token);
+                    }
+                });
         return root;
+    }
+
+    private void updateTokenToFirebase(String token) {
+        FirebaseDatabase db=FirebaseDatabase.getInstance();
+        DatabaseReference tokenref=db.getReference("Tokens");
+        Token tokenobj= new Token(token,"false");
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String userKey = user.getUid();
+        tokenref.child(userKey).setValue(tokenobj);
     }
 }
 //    final Intent intent=new Intent(HomeFragment.this.getActivity(), Menu_trial.class);

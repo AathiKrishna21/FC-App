@@ -135,4 +135,9 @@ public class g_s_mobileverification extends AppCompatActivity {
             }
         };
     }
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(g_s_mobileverification.this, MainActivity.class));
+        finish();
+    }
 }

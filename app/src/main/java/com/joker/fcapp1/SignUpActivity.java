@@ -110,7 +110,7 @@ public class SignUpActivity extends AppCompatActivity {
                                                         userKey = user.getUid();
                                                         dbRef.child(userKey).child("Name").setValue(name);
                                                         dbRef.child(userKey).child("Email").setValue(email);
-                                                        dbRef.child(userKey).child("ProfileUrl").setValue("");
+                                                        dbRef.child(userKey).child("ProfileUrl").setValue("https://i.ibb.co/fXc5K2g/ava.jpg");
 
 
                                                         startActivity(new Intent(SignUpActivity.this, g_s_mobileverification.class));

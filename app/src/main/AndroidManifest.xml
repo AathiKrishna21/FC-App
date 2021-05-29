@@ -13,7 +13,7 @@
         android:theme="@style/AppTheme"
         tools:replace="android:icon,android:label">
         <activity android:name=".Food_trial" />
-<!--        <activity android:name=".Menu_trial" />-->
+        <!--        <activity android:name=".Menu_trial" />-->
         <activity android:name=".ui.home.Menu" />
         <activity android:name=".Shop1Activity" />
         <activity
@@ -72,6 +72,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <service
+            android:name="com.joker.fcapp1.Service.MyFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <meta-data android:name="com.google.firebase.messaging.default_notification_icon"
+
+            android:resource="@drawable/fc_logo" />
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />

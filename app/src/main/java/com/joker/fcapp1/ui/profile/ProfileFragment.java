@@ -129,9 +129,9 @@ public class ProfileFragment extends Fragment{
                 profileName.setText(user.getName());
                 profileEmail.setText(user.getEmail());
                 profilephnno.setText(user.getPhonenumber());
-                if(!user.getProfileurl().equals("")) {
+//                if(!user.getProfileurl().equals("")) {
                     Picasso.get().load(user.getProfileurl()).into(profileImage);
-                }
+//                }
 //                cardView.setVisibility(View.VISIBLE);
 //                profileEmail.setVisibility(View.VISIBLE);
 //                profileName.setVisibility(View.VISIBLE);

@@ -51,5 +51,9 @@ dependencies {
     implementation 'com.tapadoo.android:alerter:2.0.4'
     implementation 'com.github.ybq:Android-SpinKit:1.4.0'
     implementation 'com.facebook.shimmer:shimmer:0.5.0'
+    implementation 'com.google.firebase:firebase-messaging:21.0.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.1.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.1.0'
+    implementation 'com.razorpay:checkout:1.6.4'
 }
 apply plugin: 'com.google.gms.google-services'
