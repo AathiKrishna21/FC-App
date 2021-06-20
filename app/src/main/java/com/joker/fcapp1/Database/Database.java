@@ -3,6 +3,7 @@ package com.joker.fcapp1.Database;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 
@@ -78,5 +79,11 @@ public class Database extends SQLiteAssetHelper  {
         String whereClause = "ProductId=?";
         String whereArgs[] = {cart.getProductId()};
         db.delete("Cart", whereClause, whereArgs);
+    }
+    public long getItemCount(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        long count = DatabaseUtils.queryNumEntries(db, "Cart");
+        db.close();
+        return count;
     }
 }

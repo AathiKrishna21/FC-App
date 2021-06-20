@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -52,6 +53,9 @@ public class PastOrders extends Fragment {
     String userKey,date;
     Order od;
     List<Cart> cart;
+    Button showmore;
+    View kodu;
+    public static int limit=1;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         ordersViewModel =
@@ -62,6 +66,8 @@ public class PastOrders extends Fragment {
         dRef = database.getReference("PastOrders");
         recyclerView = root.findViewById(R.id.pastordesrrecyclerview);
         bg=root.findViewById(R.id.bg_img);
+        showmore=root.findViewById(R.id.showmore);
+        kodu=root.findViewById(R.id.view);
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this.getContext());
         layoutManager.setReverseLayout(true);
@@ -69,12 +75,14 @@ public class PastOrders extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         userKey = user.getUid();
-        loadOrder(userKey);
+
+        loadOrder();
+
 //        final TextView textView = root.findViewById(R.id.text_notifications);
 //        ordersViewModel.getText().observe(this, new Observer<String>() {
         return root;
     }
-    private void loadOrder(String uerkey) {
+    private void loadOrder() {
 
         FirebaseRecyclerOptions<Order> options=new FirebaseRecyclerOptions.Builder<Order>()
                 .setQuery(dRef.orderByChild("uid").equalTo(userKey),Order.class)
@@ -85,31 +93,67 @@ public class PastOrders extends Fragment {
 
             @Override
             protected void onBindViewHolder(@NonNull PastOrderViewHolder holder, int position, @NonNull Order model) {
-                Query queries =dRef.orderByChild("uid").equalTo(userKey);
-                queries.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if(snapshot.exists()){
-                            bg.setVisibility(View.GONE);
-                            recyclerView.setVisibility(View.VISIBLE);
-                        }
-                        else{
-                            bg.setVisibility(View.VISIBLE);
-                            recyclerView.setVisibility(View.GONE);
-                        }
+                if(getItemCount()==0){
+                    bg.setVisibility(View.VISIBLE);
+                    recyclerView.setVisibility(View.GONE);
+                    showmore.setVisibility(View.GONE);
+                    kodu.setVisibility(View.GONE);
+                }
+                else{
+                    bg.setVisibility(View.GONE);
+                    recyclerView.setVisibility(View.VISIBLE);
+                    if(getItemCount()-1<limit) {
+                        kodu.setVisibility(View.GONE);
+                        showmore.setVisibility(View.GONE);
                     }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
+                    else {
+                        showmore.setVisibility(View.VISIBLE);
+                        kodu.setVisibility(View.VISIBLE);
                     }
-                });
+                }
+//                Query queries =dRef.orderByChild("uid").equalTo(userKey);
+//                queries.addListenerForSingleValueEvent(new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                        if(snapshot.exists()){
+//                            bg.setVisibility(View.GONE);
+//                            recyclerView.setVisibility(View.VISIBLE);
+//                            if(getItemCount()-1<limit) {
+//                                kodu.setVisibility(View.GONE);
+//                                showmore.setVisibility(View.GONE);
+//                            }
+//                            else {
+//                                showmore.setVisibility(View.VISIBLE);
+//                                kodu.setVisibility(View.VISIBLE);
+//                            }
+//                        }
+//                        else{
+//                            bg.setVisibility(View.VISIBLE);
+//                            recyclerView.setVisibility(View.GONE);
+//                            showmore.setVisibility(View.GONE);
+//                            kodu.setVisibility(View.GONE);
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(@NonNull DatabaseError error) {
+//
+//                    }
+//                });
                 id=adapter.getRef(position).getKey();
                 Date currentTime = Calendar.getInstance().getTime();
                 String datetime=currentTime.toString();
                 String[] words=datetime.split("\\s");
                 date=words[1]+" "+words[2]+" "+words[5];
 //                id="#"+id;
+                if(!(position>=getItemCount()-limit)) {
+                        holder.itemView.setVisibility(View.GONE);
+                        holder.itemView.setLayoutParams(new RecyclerView.LayoutParams(0, 0));
+                }
+//                else{
+//                    holder.itemView.setVisibility(View.GONE);
+//                    holder.itemView.setLayoutParams(new RecyclerView.LayoutParams(0, 0));
+//                }
                 holder.orderid.setText("#"+id);
                 holder.cost.setText("₹"+model.getTotalcost());
                 if(model.getDate().equals(date)){
@@ -160,7 +204,13 @@ public class PastOrders extends Fragment {
             }
 
         };
-
+        showmore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                limit=limit+1;
+                loadOrder();
+            }
+        });
         adapter.startListening();
         recyclerView.setAdapter(adapter);
     }

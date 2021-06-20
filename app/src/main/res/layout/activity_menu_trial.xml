@@ -91,15 +91,93 @@
                 <include layout="@layout/shimmer_menu"></include>
 
                 <include layout="@layout/shimmer_menu"></include>
+
+
             </LinearLayout>
         </com.facebook.shimmer.ShimmerFrameLayout>
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="5dp"
+        android:layout_above="@+id/cart_relative"
         android:id="@+id/menurecyclerview"
         android:layout_below="@+id/topic_menu"
         android:scrollbars="vertical"
         />
+        <RelativeLayout
+            android:id="@+id/cart_relative"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/orange">
+
+            <RelativeLayout
+                android:id="@+id/totalrl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true">
+
+                <TextView
+                    android:id="@+id/total_cost"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="TOTAL : "
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                    android:textColor="@color/white"
+                    android:textSize="17dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/amount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/total_cost"
+                    android:text="1000"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                    android:textColor="@color/white"
+                    android:textSize="17dp"
+                    android:textStyle="bold" />
+
+            </RelativeLayout>
+            <TextView
+                android:id="@+id/items"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="xn Items"
+                android:layout_centerVertical="true"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:textColor="@color/white"
+                android:layout_marginLeft="20dp"
+                android:textSize="17dp"
+                android:textStyle="bold" />
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="5dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="20dp"
+                >
+
+
+                <Button
+                    android:id="@+id/gotocart"
+                    android:layout_width="80dp"
+                    android:layout_height="40dp"
+                    android:background="#5151A6"
+                    android:backgroundTint="@color/white"
+                    android:elevation="5dp"
+                    android:text="CART"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                    android:textColor="@color/orange"
+                    android:textSize="14dp"
+                    android:textStyle="bold|italic" />
+            </androidx.cardview.widget.CardView>
+
+        </RelativeLayout>
     </RelativeLayout>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

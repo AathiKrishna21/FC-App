@@ -33,10 +33,10 @@
             app:layout_constraintTop_toTopOf="parent">
 
 
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cardView9"
                     android:layout_width="wrap_content"
@@ -152,6 +152,27 @@
                     app:SpinKit_Color="@color/orange"
                     tools:layout_editor_absoluteX="132dp"
                     tools:layout_editor_absoluteY="124dp" />
+            </androidx.cardview.widget.CardView>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <androidx.cardview.widget.CardView
+                android:layout_width="310dp"
+                android:layout_height="295dp"
+                android:id="@+id/nointernetcard"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                app:cardCornerRadius="25dp"
+                app:cardElevation="10dp">
+                <com.airbnb.lottie.LottieAnimationView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/animation_view"
+                    app:lottie_rawRes="@raw/nointernet1"
+                    app:lottie_autoPlay="true"
+                    app:lottie_loop="true"/>
+
             </androidx.cardview.widget.CardView>
         </RelativeLayout>
 

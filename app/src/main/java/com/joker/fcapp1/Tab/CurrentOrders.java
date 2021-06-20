@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
@@ -24,6 +25,7 @@ import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -86,9 +88,8 @@ public class CurrentOrders extends Fragment {
                 );
             }
         });
+
         loadOrder(userKey);
-//        final TextView textView = root.findViewById(R.id.text_notifications);
-//        ordersViewModel.getText().observe(this, new Observer<String>() {
         return root;
     }
     private void loadOrder(String uerkey) {
@@ -100,18 +101,34 @@ public class CurrentOrders extends Fragment {
 
             @Override
             protected void onBindViewHolder(@NonNull final OrderViewHolder holder, int position, @NonNull final Order model) {
+                if ((getItemCount() == 0)) {
+                    recyclerView.setVisibility(View.GONE);
+                } else {
+                    bg.setVisibility(View.GONE);
+                }
                 Query queries =dRef.orderByChild("uid").equalTo(userKey);
-                queries.addListenerForSingleValueEvent(new ValueEventListener() {
+                queries.addChildEventListener(new ChildEventListener() {
                     @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if(snapshot.exists()){
-                            bg.setVisibility(View.GONE);
-                            recyclerView.setVisibility(View.VISIBLE);
-                        }
-                        else{
-                            bg.setVisibility(View.VISIBLE);
+                    public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                    }
+
+                    @Override
+                    public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+                        if(getItemCount()==0){
                             recyclerView.setVisibility(View.GONE);
+                            bg.setVisibility(View.VISIBLE);
                         }
+                    }
+
+                    @Override
+                    public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
                     }
 
                     @Override
@@ -140,35 +157,9 @@ public class CurrentOrders extends Fragment {
 
                     }
                 });
-//                Date currentTime = Calendar.getInstance().getTime();
-//                String datetime=currentTime.toString();
-//                String[] words=datetime.split("\\s");
-//                time=words[3].substring(6,8);
-//                int a=Integer.parseInt(time);
+//
                 int b=Integer.parseInt(model.getTime().substring(6,8));
                 boolean c=true;
-//                Handler handler = new Handler();
-//                handler.postDelayed(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        scardView.setVisibility(View.GONE);
-////                        mcardView.setVisibility(View.VISIBLE);
-//                    }
-//                }, 1400);
-//                while (c) {
-//                    Date currentTime = Calendar.getInstance().getTime();
-//                    String datetime=currentTime.toString();
-//                    String[] words=datetime.split("\\s");
-//                    int a=Integer.parseInt(words[3].substring(6,8));
-//                    if ((b + 10) % 60 == a) {
-//                        holder.status.setVisibility(View.GONE);
-//                        c = false;
-//                    }
-//                }
-//                holder.items.setText();
-//                holder.status.setText(model.getStatus());
-//                holder.total_cost.setText(model.getTotalcost());
-
             }
             @NonNull
             @Override
@@ -201,7 +192,7 @@ public class CurrentOrders extends Fragment {
             return "Preparing Food";
         }
         else if(status.equals("2")){
-            return "Ready To Be Collected";
+            return "Order Ready";
         }
         return "";
     }

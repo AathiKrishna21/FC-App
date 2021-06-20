@@ -1,15 +1,18 @@
 package com.joker.fcapp1.ui.home;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import androidx.annotation.ColorRes;
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -21,6 +24,7 @@ import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -29,6 +33,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.joker.fcapp1.Menu_trial;
+import com.joker.fcapp1.Model.Internet;
 import com.joker.fcapp1.Model.Token;
 import com.joker.fcapp1.R;
 import com.joker.fcapp1.ui.cart.CartFragment;
@@ -40,6 +45,8 @@ public class HomeFragment extends Fragment {
     FirebaseDatabase database;
     DatabaseReference category;
     String key;
+    LottieAnimationView view;
+    ImageView fc;
     private HomeViewModel homeViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -51,11 +58,24 @@ public class HomeFragment extends Fragment {
         Intent intent=getActivity().getIntent();
         Bundle extras=intent.getExtras();
         String flag=intent.getStringExtra("uid");
+        fc=root.findViewById(R.id.imageView7);
+
         if(flag!=null){
             intent.removeExtra("uid");
             NavController navController = NavHostFragment.findNavController(HomeFragment.this);
             navController.navigate(
                     R.id.action_fragment1_to_fragment3,
+                    null,
+                    new NavOptions.Builder()
+                            .build()
+            );
+        }
+        String isCart=intent.getStringExtra("isCart");
+        if(isCart!=null){
+            intent.removeExtra("isCart");
+            NavController navController = NavHostFragment.findNavController(HomeFragment.this);
+            navController.navigate(
+                    R.id.action_fragment1_to_fragment2,
                     null,
                     new NavOptions.Builder()
                             .build()
@@ -87,8 +107,11 @@ public class HomeFragment extends Fragment {
                             .enableSwipeToDismiss()
                             .show();
                     intent.removeExtra("Alerter");
-                }
             }
+//                else if(extras.containsKey("isCart")){
+//
+//                }
+        }
 
 
         }
@@ -99,7 +122,17 @@ public class HomeFragment extends Fragment {
         final CardView c2 = root.findViewById(R.id.cardview2);
         final CardView c3 = root.findViewById(R.id.cardview3);
         final CardView c4 = root.findViewById(R.id.cardview4);
-
+        view=root.findViewById(R.id.animation_view);
+        if(Internet.isConnectedToInternet(getContext())){
+            view.setVisibility(View.GONE);
+        }
+        else{
+            c1.setVisibility(View.GONE);
+            c2.setVisibility(View.GONE);
+            c3.setVisibility(View.GONE);
+            c4.setVisibility(View.GONE);
+            fc.setVisibility(View.GONE);
+        }
         homeViewModel.getText().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
@@ -161,20 +194,3 @@ public class HomeFragment extends Fragment {
         tokenref.child(userKey).setValue(tokenobj);
     }
 }
-//    final Intent intent=new Intent(HomeFragment.this.getActivity(), Menu_trial.class);
-//                        category.orderByChild("Name")
-//                                .equalTo("Lakshmi Bhavan")
-//                                .addListenerForSingleValueEvent(new ValueEventListener() {
-//                                    @Override
-//                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                                        for(DataSnapshot childSnapshot:dataSnapshot.getChildren())
-//                                            key=childSnapshot.getKey();
-//                                        intent.putExtra("CategoryId",key);
-//                                        startActivity(intent);
-//                                    }
-//
-//                                    @Override
-//                                    public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//                                    }
-//                                });

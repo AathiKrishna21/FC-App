@@ -1,11 +1,15 @@
 package com.joker.fcapp1;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -27,6 +31,7 @@ import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.joker.fcapp1.Model.G_SignIn_Details;
+import com.joker.fcapp1.Model.Order;
 import com.joker.fcapp1.Model.Username;
 
 import java.util.concurrent.TimeUnit;
@@ -43,6 +48,7 @@ public class g_s_mobileverification extends AppCompatActivity {
     String userKey;
     FirebaseAuth mAuth;
     PhoneAuthCredential credential;
+    boolean doubleBackToExitPressedOnce = false;
     private DatabaseReference mDatabase;
 
     private void findviews(){
@@ -69,14 +75,53 @@ public class g_s_mobileverification extends AppCompatActivity {
         genotp.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                final ProgressDialog mdialog=new ProgressDialog(g_s_mobileverification.this);
-                mdialog.setMessage("Please Wait...");
-                mdialog.show();
                 phnnum=phnno.getText().toString();
                 phnnum1 = "+91" + phnnum;
-                PhoneAuthProvider.getInstance().verifyPhoneNumber(
-                        phnnum1,60, TimeUnit.SECONDS,g_s_mobileverification.this,mCallback);
-                mdialog.dismiss();
+                AlertDialog.Builder builder = new AlertDialog.Builder(g_s_mobileverification.this);
+                // Set a title for alert dialog
+
+
+                builder.setTitle("Confirm Phone Number");
+                // Ask the final question
+                builder.setMessage("+91 "+phnnum+"\n\nWe will send you an OTP to this number. Are you ok with this number?");
+                // Set the alert dialog yes button click listener
+                builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        final ProgressDialog mdialog=new ProgressDialog(g_s_mobileverification.this);
+                        mdialog.setMessage("Please Wait...");
+                        mdialog.show();
+
+                        PhoneAuthProvider.getInstance().verifyPhoneNumber(
+                                phnnum1,60, TimeUnit.SECONDS,g_s_mobileverification.this,mCallback);
+                        mdialog.dismiss();
+                    }
+                });
+                // Set the alert dialog no button click listener
+                builder.setNegativeButton("Edit", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Do something when No button clicked
+//                                    Toast.makeText(getApplicationContext(),
+//                                            "No Button Clicked",Toast.LENGTH_SHORT).show();
+                    }
+                });
+                final AlertDialog dialog = builder.create();
+                // Display the alert dialog on interface
+
+                dialog.setOnShowListener( new DialogInterface.OnShowListener() {
+                    @Override
+                    public void onShow(DialogInterface arg0) {
+                        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.parseColor("#FF7104"));
+                        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setPadding(10,0,520,0);
+                        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.parseColor("#FF7104"));
+                    }
+                });
+                dialog.setCancelable(false);
+                dialog.show();
+
+
+
             }
         });
         signin.setOnClickListener(new View.OnClickListener() {
@@ -136,8 +181,22 @@ public class g_s_mobileverification extends AppCompatActivity {
         };
     }
     public void onBackPressed() {
-        super.onBackPressed();
-        startActivity(new Intent(g_s_mobileverification.this, MainActivity.class));
-        finish();
+        if (doubleBackToExitPressedOnce) {
+            finishAffinity();
+            finish();
+            return;
+        }
+
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "Swipe back again to exit!", Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce=false;
+            }
+        }, 2000);
     }
+
 }

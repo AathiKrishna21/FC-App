@@ -16,11 +16,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/title2" />
-    <ImageView
+<!--    <ImageView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:id="@+id/bg_img"-->
+<!--        android:src="@drawable/empty"/>-->
+    <com.airbnb.lottie.LottieAnimationView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/bg_img"
-        android:src="@drawable/empty"/>
+        android:id="@+id/animation_view"
+        app:lottie_rawRes="@raw/emptybox"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/cartrecyclerview"
@@ -90,7 +97,7 @@
                 android:background="#5151A6"
                 android:elevation="5dp"
                 android:backgroundTint="@color/white"
-                android:text="PLACE ORDER"
+                android:text="PROCEED TO PAYMENT"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                 android:textColor="@color/orange"
                 android:textStyle="bold|italic"

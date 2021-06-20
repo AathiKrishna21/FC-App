@@ -1,5 +1,4 @@
 <resources>
-
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
@@ -11,8 +10,31 @@
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:forceDarkAllowed" xmlns:tools="http://schemas.android.com/tools" tools:targetApi="q">false</item>
     </style>
-
+    <style name="Theme.Design.Light.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:forceDarkAllowed" xmlns:tools="http://schemas.android.com/tools" tools:targetApi="q">false</item>
+    </style>
+    <style name="radionbutton"
+        parent="Base.Widget.AppCompat.CompoundButton.RadioButton">
+        <item name="android:button">@drawable/custom_btn_radio</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+    <style name="Theme.AppCompat.Transparent">
+        <!--        <item name="android:windowFullscreen">true</item>-->
+        <item name="android:statusBarColor">@color/status_bar</item>
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:windowDisablePreview">true</item>
+        <item name="colorPrimaryDark">#fb5A00</item>
+    </style>
     <style name="AppTheme.popup">
         <item name="android:windowContentTransitions">true</item>
         <item name="android:backgroundDimEnabled">true</item>

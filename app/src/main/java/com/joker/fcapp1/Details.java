@@ -125,6 +125,7 @@ public class Details extends Activity {
                 else{
                     toggleButton.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_heart));
                 }
+                toggleButton.setChecked(favo);
                 adapter=new DetailsAdapter(Details.this,cart);
                 detialsrcview.setAdapter(adapter);
 //                hi.setText(order1.getName());
@@ -179,7 +180,7 @@ public class Details extends Activity {
         }
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            if (favo||isChecked) {
+            if (isChecked) {
                 toggleButton.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_heartfill));
                 dRef.child(id).child("favorite").setValue(true);
             }

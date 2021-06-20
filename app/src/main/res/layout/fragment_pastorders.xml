@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -17,8 +17,25 @@
         android:id="@+id/pastordesrrecyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@+id/view"
         android:scrollbars="vertical"
         tools:ignore="MissingConstraints" />
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/orange"
+        android:layout_marginBottom="50dp"
+        android:layout_alignParentBottom="true" />
+    <info.hoang8f.widget.FButton
+        android:id="@+id/showmore"
+        android:text="SHOW MORE"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        app:cornerRadius="0dp"
+        android:textColor="@color/orange"
+        android:backgroundTint="@color/white"
+        android:layout_marginTop="10dp"
+        />
+</RelativeLayout>

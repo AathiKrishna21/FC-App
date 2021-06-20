@@ -18,6 +18,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.joker.fcapp1.Database.Database;
 import com.joker.fcapp1.Interface.ItemClickListener;
+import com.joker.fcapp1.Main2Activity;
 import com.joker.fcapp1.Model.Cart;
 import com.joker.fcapp1.Model.Order;
 import com.joker.fcapp1.R;
@@ -95,20 +96,21 @@ public class CartAdapter extends RecyclerView.Adapter<CartViewHolder>{
         holder.count.setOnValueChangeListener(new ElegantNumberButton.OnValueChangeListener() {
             @Override
             public void onValueChange(ElegantNumberButton view, int oldValue, int newValue) {
-                Cart cart=listData.get(position);
-                cart.setQuantity(String.valueOf(newValue));
-                if(String.valueOf(newValue).equals("0")){
-                    new Database(cart1.getContext()).deleteItem(cart);
-                    cart1.loadCart();
-                }
-                else{
-                    new Database(cart1.getContext()).updateCart(cart);
-                }
-                holder.cost.setText("Rs."+String.valueOf(Integer.parseInt(listData.get(position).getPrice())*Integer.parseInt(listData.get(position).getQuantity())));
-                total=0;
-                for(Cart c : listData)
-                    total+=((Integer.parseInt(c.getPrice()))*(Integer.parseInt(c.getQuantity())));
-                cart1.total_cost.setText(String.valueOf(total));
+                    Cart cart=listData.get(position);
+                    cart.setQuantity(String.valueOf(newValue));
+                    if(String.valueOf(newValue).equals("0")){
+                        new Database(cart1.getContext()).deleteItem(cart);
+                        cart1.loadCart(1);
+                    }
+                    else{
+                        new Database(cart1.getContext()).updateCart(cart);
+                    }
+                    holder.cost.setText("Rs."+String.valueOf(Integer.parseInt(listData.get(position).getPrice())*Integer.parseInt(listData.get(position).getQuantity())));
+                    total=0;
+                    for(Cart c : listData)
+                        total+=((Integer.parseInt(c.getPrice()))*(Integer.parseInt(c.getQuantity())));
+                    cart1.total_cost.setText(String.valueOf(total));
+//                ((Main2Activity) cart1.getContext()).removeBadgeView();
             }
         });
     }

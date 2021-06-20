@@ -37,6 +37,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.joker.fcapp1.Main2Activity;
 import com.joker.fcapp1.MainActivity;
 import com.joker.fcapp1.Model.Flag;
+import com.joker.fcapp1.Model.Internet;
 import com.joker.fcapp1.Model.User;
 import com.joker.fcapp1.Model.Username;
 import com.joker.fcapp1.R;
@@ -59,7 +60,7 @@ public class ProfileFragment extends Fragment{
     public static String uname,email,phnno;
     static String imgurl,userKey;
     SpinKitView waveview;
-    CardView mcardView,scardView;
+    CardView mcardView,scardView,nointernetview;
     Flag flag;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference dbRef = database.getReference("Users");
@@ -78,6 +79,8 @@ public class ProfileFragment extends Fragment{
         mcardView.setVisibility(View.GONE);
         scardView=root.findViewById(R.id.summacard);
         scardView.setVisibility(View.VISIBLE);
+        nointernetview=root.findViewById(R.id.nointernetcard);
+        nointernetview.setVisibility(View.GONE);
 //        profileEmail.setVisibility(View.GONE);
 //        profileName.setVisibility(View.GONE);
 //        profilephnno.setVisibility(View.GONE);
@@ -96,7 +99,11 @@ public class ProfileFragment extends Fragment{
                 startActivity(new Intent(ProfileFragment.this.getActivity(), mobileverification.class));
             }
         });*/
-
+        if(!Internet.isConnectedToInternet(getContext())){
+            mcardView.setVisibility(View.GONE);
+            scardView.setVisibility(View.GONE);
+            nointernetview.setVisibility(View.VISIBLE);
+        }
         profileViewModel.getText().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
@@ -129,9 +136,9 @@ public class ProfileFragment extends Fragment{
                 profileName.setText(user.getName());
                 profileEmail.setText(user.getEmail());
                 profilephnno.setText(user.getPhonenumber());
-//                if(!user.getProfileurl().equals("")) {
+                if(!user.getProfileurl().equals("")) {
                     Picasso.get().load(user.getProfileurl()).into(profileImage);
-//                }
+                }
 //                cardView.setVisibility(View.VISIBLE);
 //                profileEmail.setVisibility(View.VISIBLE);
 //                profileName.setVisibility(View.VISIBLE);

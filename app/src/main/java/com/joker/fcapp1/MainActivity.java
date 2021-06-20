@@ -86,36 +86,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        //if the user is already signed in
-        //we will close this activity
-        //and take the user to profile activity
-        FirebaseUser user=mAuth.getCurrentUser();
-//        Intent intent=getIntent();
-
-        if (user != null ) {
-            if (getIntent().getExtras() != null) {
-                for (String key : getIntent().getExtras().keySet()){
-                    String value = getIntent().getExtras().getString(key);
-                    Intent intent1=new Intent(this, Main2Activity.class);
-                    intent1.putExtra("uid",value);
-                    startActivity(intent1);
-                }}
-            else if(!user.getPhoneNumber().equals("")) {
-                Intent intent1=new Intent(this, Main2Activity.class);
-                startActivity(intent1);
-                finish();
-            }
-            else{
-                startActivity(new Intent(this, g_s_mobileverification.class));
-                finish();
-            }
-        }
-
-    }
-
     public void onBackPressed(){
         finishAffinity();
         finish();

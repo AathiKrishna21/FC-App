@@ -32,11 +32,10 @@ public class NotificationHelper extends ContextWrapper {
     private void createChannel() {
         NotificationChannel fcappchannel = new NotificationChannel(FCAPP_CHANNEL_ID,
                 FCAPP_CHANNEL_NAME,
-                NotificationManager.IMPORTANCE_DEFAULT);
-        fcappchannel.enableLights(false);
+                NotificationManager.IMPORTANCE_HIGH);
+        fcappchannel.enableLights(true);
         fcappchannel.enableVibration(true);
         fcappchannel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
-
         getManager().createNotificationChannel(fcappchannel);
     }
 
@@ -52,7 +51,8 @@ public class NotificationHelper extends ContextWrapper {
                 .setContentIntent(contentIntent)
                 .setContentTitle(title)
                 .setContentText(body)
-                .setSmallIcon(R.drawable.fc_logo)
+                .setSmallIcon(R.drawable.ic_default_notification)
+                .setColor(getColor(R.color.orange))
                 .setLargeIcon(BitmapFactory.decodeResource(getResources(),R.drawable.fc_logo))
                 .setSound(soundUri)
                 .setVisibility(Notification.VISIBILITY_PUBLIC)

@@ -1,26 +1,35 @@
 package com.joker.fcapp1.ui.cart;
 
 import android.app.NotificationManager;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.airbnb.lottie.LottieAnimationView;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -33,13 +42,16 @@ import com.joker.fcapp1.Database.Database;
 import com.joker.fcapp1.Main2Activity;
 import com.joker.fcapp1.Model.APIModel;
 import com.joker.fcapp1.Model.Cart;
+import com.joker.fcapp1.Model.Internet;
 import com.joker.fcapp1.Model.Notification;
 import com.joker.fcapp1.Model.Order;
+import com.joker.fcapp1.Model.Payment;
 import com.joker.fcapp1.Model.Response;
 import com.joker.fcapp1.Model.Sender;
 import com.joker.fcapp1.Model.Token;
 import com.joker.fcapp1.R;
 import com.joker.fcapp1.Remote.APIService;
+import com.joker.fcapp1.StdFrontPageActivity;
 import com.joker.fcapp1.ViewHolder.CartAdapter;
 import com.joker.fcapp1.ui.orders.OrdersFragment;
 import com.razorpay.Checkout;
@@ -65,13 +77,17 @@ public class CartFragment extends Fragment implements PaymentResultListener {
 
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
-    RelativeLayout relativeLayout;
+    RelativeLayout relativeLayout,amt;
+    RadioButton op,cash;
+    RadioGroup radioGroup;
     FirebaseDatabase database;
     DatabaseReference dRef,FoodRef,profiledRef;
     Boolean alerter=false;
     public TextView total_cost;
     Button orderbtn;
     ImageView bg;
+    int cost,tax;
+    TextView a1,a2,a3;
     Cart cart1;
     String date,time,time2,orderid;
     List<Cart> cart = new ArrayList<>();
@@ -79,6 +95,7 @@ public class CartFragment extends Fragment implements PaymentResultListener {
     String userKey,ShopId,FoodId,name,phnno;
     APIService mService;
     Order order;
+    LottieAnimationView view;
     private static CartFragment instance;
     FirebaseAuth mAuth;
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -96,7 +113,7 @@ public class CartFragment extends Fragment implements PaymentResultListener {
         profiledRef=database.getReference("Users");
         relativeLayout=root.findViewById(R.id.cart_relative);
         //Init
-        bg=root.findViewById(R.id.bg_img);
+//        bg=root.findViewById(R.id.bg_img);
         recyclerView = root.findViewById(R.id.cartrecyclerview);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this.getContext());
@@ -104,80 +121,161 @@ public class CartFragment extends Fragment implements PaymentResultListener {
 
         total_cost=root.findViewById(R.id.amount);
         orderbtn = root.findViewById(R.id.button3);
-
+        view=root.findViewById(R.id.animation_view);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         userKey = user.getUid();
 
-
+        if(Internet.isConnectedToInternet(getContext())){
+            view.setVisibility(View.GONE);
+            loadCart(0);
+        }
+        else{
+            relativeLayout.setVisibility(View.GONE);
+            if(new Database(getContext()).getItemCount()!=0)
+                ((Main2Activity)getActivity()).removeBadgeView();
+        }
 
         orderbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Date currentTime = Calendar.getInstance().getTime();
-                String datetime=currentTime.toString();
-                String[] words=datetime.split("\\s");
-                date=words[1]+" "+words[2]+" "+words[5];
-                time=words[3];
-                time2=time.substring(0,5);
-                order = new Order(date,time,ShopId,total_cost.getText().toString(),"0",userKey,cart,false);
-                orderid=String.valueOf(System.currentTimeMillis());
-                FirebaseUser user=mAuth.getCurrentUser();
-                String samount=total_cost.getText().toString();
-                int amount =Math.round(Float.parseFloat(samount)*100);
-                Checkout checkout=new Checkout();
-                checkout.setKeyID("rzp_test_v9Eu6C6hCOiCvb");
-                checkout.setImage(R.drawable.fc_logo);
-                JSONObject object=new JSONObject();
-                try {
-                    // to put name
-                    object.put("name", convertCodetoShop(order.getShopId()));
+                final AlertDialog.Builder alertDialog=new AlertDialog.Builder(getActivity());
+                alertDialog.setTitle("Payment");
+                alertDialog.setMessage("Choose your payment method");
+                LayoutInflater inflater = getActivity().getLayoutInflater();
+                final View view1=inflater.inflate(R.layout.payment_selector,null);
+                amt=view1.findViewById(R.id.amount);
+                a1=view1.findViewById(R.id.a1);
+                a2=view1.findViewById(R.id.a2);
+                a3=view1.findViewById(R.id.a3);
+                op=view1.findViewById(R.id.radioMale);
+                cash=view1.findViewById(R.id.radioFemale);
+                radioGroup=view1.findViewById(R.id.radioGroup);
+                amt.setVisibility(View.GONE);
+                alertDialog.setView(view1);
+                alertDialog.setPositiveButton("PROCEED", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
 
-                    // put description
-                    object.put("description", orderid);
+                        if(op.isChecked()){
 
-                    // to set theme color
-                    object.put("theme.color", "#FF7104");
+                            String samount=a3.getText().toString();
+                            int amount =Math.round(Float.parseFloat(samount)*100);
+                            order = new Order("","",ShopId,String.valueOf(amount),"0",userKey,cart,false);
+                            orderid=String.valueOf(System.currentTimeMillis());
+                            Payment.setOrderId(orderid);
+                            Payment.setOrder(order);
+                            Payment.setIsCart(true);
+                            ((Main2Activity)getActivity()).razorpay();
+                        }
+                        if(cash.isChecked()){
+                            Date currentTime = Calendar.getInstance().getTime();
+                            String datetime=currentTime.toString();
+                            String[] words=datetime.split("\\s");
+                            date=words[1]+" "+words[2]+" "+words[5];
+                            time=words[3];
+                            time2=time.substring(0,5);
+                            order = new Order(date,time,ShopId,total_cost.getText().toString(),"0",userKey,cart,false);
+                            orderid=String.valueOf(System.currentTimeMillis());
+                            Payment.setOrder(order);
+                            Payment.setOrderId(orderid);
+                            Payment.isCart=true;
+                            onCompletedPayment();
+                        }
 
-                    // put the currency
-                    object.put("currency", "INR");
+                    }
+                });
+                alertDialog.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
 
-                    // put amount
-                    object.put("amount", amount);
+                final AlertDialog dialog = alertDialog.create();
+                radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+                {
+                    @Override
+                    public void onCheckedChanged(RadioGroup group, int checkedId) {
+                        // checkedId is the RadioButton selected
+                        RadioButton rb=(RadioButton)view1.findViewById(checkedId);
+                        if(op.isChecked()){
+                            amt.setVisibility(View.VISIBLE);
+                            cost=Integer.parseInt(total_cost.getText().toString());
+                            tax=(int)Math.ceil(cost*0.0236);
+                            a1.setText(String.valueOf(cost));
+                            a2.setText(String.valueOf((tax)));
+                            a3.setText(String.valueOf(cost+tax));
+                            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
+                        }
+                        else{
+                            amt.setVisibility(View.GONE);
+                            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
 
-                    // put mobile number
-                    object.put("prefill.contact", user.getPhoneNumber());
+                        }
+//                        rb.setText("hi " + String.valueOf(checkedId));
+                    }
+                });
 
-                    // put email
-                    object.put("prefill.email", user.getEmail());
 
-                    // open razorpay to checkout activity
-                    checkout.open(getActivity(), object);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-//                dRef.child(orderid).setValue(order);
-//                new Database(getContext()).cleanCart();
-//                alerter=true;
-//                sendNotificationOrder(orderid,order);
 
-                /*Alerter.create(getActivity())
-                        .setTitle("Order Placed!")
-                        .setText("Click to see Order Status")
-                        .setIcon(R.drawable.ic_order)
-                        .setDuration(3000)
-                        .setBackgroundColorRes(R.color.status_bar)
-                        .setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                startActivity(new Intent(CartFragment.this.getActivity(), OrdersFragment.class));
-                            }
-                        })
-                        .enableSwipeToDismiss()
-                        .show();*/
+                dialog.setOnShowListener( new DialogInterface.OnShowListener() {
+                    @Override
+                    public void onShow(DialogInterface arg0) {
+                        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+                        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.parseColor("#FF7104"));
+                        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.parseColor("#FF7104"));
+                    }
+                });
+                dialog.setCancelable(false);
+                dialog.show();
+//                Date currentTime = Calendar.getInstance().getTime();
+//                String datetime=currentTime.toString();
+//                String[] words=datetime.split("\\s");
+//                date=words[1]+" "+words[2]+" "+words[5];
+//                time=words[3];
+//                time2=time.substring(0,5);
+//                order = new Order(date,time,ShopId,total_cost.getText().toString(),"0",userKey,cart,false);
+//                orderid=String.valueOf(System.currentTimeMillis());
+//                FirebaseUser user=mAuth.getCurrentUser();
+//                GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getContext());
+//                String email=acct.getEmail();
+//                String samount=total_cost.getText().toString();
+//                int amount =Math.round(Float.parseFloat(samount)*100);
+//                Checkout checkout=new Checkout();
+//                checkout.setKeyID("rzp_test_v9Eu6C6hCOiCvb");
+//                checkout.setImage(R.drawable.fc_logo);
+//                JSONObject object=new JSONObject();
+//                try {
+//                    // to put name
+//                    object.put("name", convertCodetoShop(order.getShopId()));
+//
+//                    // put description
+//                    object.put("description", orderid);
+//
+//                    // to set theme color
+//                    object.put("theme.color", "#FF7104");
+//
+//                    // put the currency
+//                    object.put("currency", "INR");
+//
+//                    // put amount
+//                    object.put("amount", amount);
+//
+//                    // put mobile number
+//                    object.put("prefill.contact", user.getPhoneNumber());
+//
+//                    // put email
+//                    object.put("prefill.email", email);
+//
+//                    // open razorpay to checkout activity
+//                    checkout.open(getActivity(), object);
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
             }
         });
 
-        loadCart();
+
 
         if(!cart.isEmpty()) {
             cart1=cart.get(0);
@@ -268,18 +366,22 @@ public class CartFragment extends Fragment implements PaymentResultListener {
                 });
     }
 
-    public void loadCart() {
+    public void loadCart(int flag) {
         cart = new Database(this.getContext()).getCarts();
+        Database database=new Database(getContext());
         adapter = new CartAdapter(cart,this);
         if(cart.isEmpty()){
             recyclerView.setVisibility(View.GONE);
             relativeLayout.setVisibility(View.GONE);
-            bg.setVisibility(View.VISIBLE);
+            view.setVisibility(View.VISIBLE);
+            if(flag==1)
+                ((Main2Activity)getActivity()).removeBadgeView();
         }
         else{
             recyclerView.setVisibility(View.VISIBLE);
             relativeLayout.setVisibility(View.VISIBLE);
-            bg.setVisibility(View.GONE);
+            view.setVisibility(View.GONE);
+            ((Main2Activity)getActivity()).editBadgeView();
         }
 
         //Calculate full total price
@@ -307,10 +409,21 @@ public class CartFragment extends Fragment implements PaymentResultListener {
         return instance;
     }
     public void onCompletedPayment(){
-        dRef.child(orderid).setValue(order);
-        new Database(getContext()).cleanCart();
+        Date currentTime = Calendar.getInstance().getTime();
+        String datetime=currentTime.toString();
+        String[] words=datetime.split("\\s");
+        date=words[1]+" "+words[2]+" "+words[5];
+        time=words[3];
+        time2=time.substring(0,5);
+        Payment.order.setDate(date);
+        Payment.order.setTime(time);
+//        order.setDate(date);
+//        order.setTime(time);
+        dRef.child(orderid).setValue(Payment.getOrder());
+        if(Payment.isIsCart())
+            new Database(getContext()).cleanCart();
         alerter=true;
-        sendNotificationOrder(orderid,order);
+        sendNotificationOrder(orderid,Payment.getOrder());
     }
     private String convertCodetoShop(String menuId) {
         if(menuId.equals("01"))
