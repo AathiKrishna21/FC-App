@@ -27,6 +27,13 @@
             android:layout_marginTop="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp">
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/animation_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/loadingimage"/>
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/imgpic"
                 android:layout_width="match_parent"

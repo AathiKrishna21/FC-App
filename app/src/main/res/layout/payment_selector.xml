@@ -8,79 +8,79 @@
     android:paddingLeft="40dp"
     android:paddingBottom="15dp"
     >
-<RadioGroup
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:id="@+id/radioGroup"
-    android:layout_gravity="center_horizontal"
-    >
-
-    <RadioButton
-        android:id="@+id/radioMale"
-        android:layout_width="match_parent"
+    <RadioGroup
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="0dp"
-        style="@style/radionbutton"
-        android:checked="false"
-        android:text="  Online Payment"
-        android:textSize="20dp" />
-    <RelativeLayout
-        android:id="@+id/amount"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:id="@+id/t1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="48dp"
-            android:text="Amount"/>
-        <TextView
-            android:id="@+id/t2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="48dp"
-            android:layout_below="@+id/t1"
-            android:text="Tax + GST"/>
-        <TextView
-            android:id="@+id/t3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="48dp"
-            android:layout_below="@+id/t2"
-            android:text="Total"/>
-        <TextView
-            android:id="@+id/a1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/t1"
-            android:layout_marginLeft="40dp"
-            android:text="Rs.1"/>
-        <TextView
-            android:id="@+id/a2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/t2"
-            android:layout_below="@+id/a1"
-            android:layout_marginLeft="26dp"
-            android:text="Rs.1"/>
-        <TextView
-            android:id="@+id/a3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/t3"
-            android:layout_below="@+id/a2"
-            android:layout_marginLeft="58dp"
-            android:text="Rs.1"/>
-    </RelativeLayout>
+        android:id="@+id/radioGroup"
+        android:layout_gravity="center_horizontal"
+        >
 
-    <RadioButton
-        android:id="@+id/radioFemale"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        style="@style/radionbutton"
-        android:text="  Cash"
-        android:layout_marginTop="10dp"
-        android:checked="false"
-        android:textSize="20dp" />
-</RadioGroup>
+        <RadioButton
+            android:id="@+id/radioMale"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+            style="@style/radionbutton"
+            android:checked="false"
+            android:text="  Online Payment"
+            android:textSize="20dp" />
+        <RelativeLayout
+            android:id="@+id/amount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/t1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="48dp"
+                android:text="Amount"/>
+            <TextView
+                android:id="@+id/t2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="48dp"
+                android:layout_below="@+id/t1"
+                android:text="Tax + GST"/>
+            <TextView
+                android:id="@+id/t3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="48dp"
+                android:layout_below="@+id/t2"
+                android:text="Total"/>
+            <TextView
+                android:id="@+id/a1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/t1"
+                android:layout_marginLeft="40dp"
+                android:text="Rs.1"/>
+            <TextView
+                android:id="@+id/a2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/t2"
+                android:layout_below="@+id/a1"
+                android:layout_marginLeft="26dp"
+                android:text="Rs.1"/>
+            <TextView
+                android:id="@+id/a3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/t3"
+                android:layout_below="@+id/a2"
+                android:layout_marginLeft="58dp"
+                android:text="Rs.1"/>
+        </RelativeLayout>
+
+        <RadioButton
+            android:id="@+id/radioFemale"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            style="@style/radionbutton"
+            android:text="  Cash"
+            android:layout_marginTop="10dp"
+            android:checked="false"
+            android:textSize="20dp" />
+    </RadioGroup>
 </RelativeLayout>

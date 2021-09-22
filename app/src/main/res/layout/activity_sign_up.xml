@@ -10,12 +10,12 @@
 
     <EditText
         android:id="@+id/email"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/_220sdp"
+        android:layout_height="@dimen/_40sdp"
         android:layout_below="@+id/editText5"
         android:layout_centerHorizontal="true"
         android:layout_marginStart="66dp"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="@dimen/_20sdp"
         android:layout_marginEnd="67dp"
         android:layout_marginBottom="1dp"
         android:backgroundTint="#b3b3b1"
@@ -32,12 +32,12 @@
 
     <EditText
         android:id="@+id/editText3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/_220sdp"
+        android:layout_height="@dimen/_40sdp"
         android:layout_below="@+id/email"
         android:layout_centerHorizontal="true"
         android:layout_marginStart="66dp"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="@dimen/_20sdp"
         android:layout_marginEnd="67dp"
         android:layout_marginBottom="1dp"
         android:backgroundTint="#b3b3b1"
@@ -54,12 +54,12 @@
 
     <EditText
         android:id="@+id/editText4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/_220sdp"
+        android:layout_height="@dimen/_40sdp"
         android:layout_below="@+id/editText3"
         android:layout_centerHorizontal="true"
         android:layout_marginStart="66dp"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="@dimen/_20sdp"
         android:layout_marginEnd="67dp"
         android:layout_marginBottom="1dp"
         android:backgroundTint="#b3b3b1"
@@ -76,8 +76,8 @@
 
     <Button
         android:id="@+id/button2"
-        android:layout_width="173dp"
-        android:layout_height="50dp"
+        android:layout_width="@dimen/_140sdp"
+        android:layout_height="@dimen/_35sdp"
         android:layout_below="@+id/editText4"
         android:layout_centerHorizontal="true"
         android:layout_marginStart="119dp"
@@ -97,11 +97,11 @@
 
     <EditText
         android:id="@+id/editText5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/_220sdp"
+        android:layout_height="@dimen/_40sdp"
         android:layout_centerHorizontal="true"
         android:layout_marginStart="66dp"
-        android:layout_marginTop="375dp"
+        android:layout_marginTop="@dimen/_300sdp"
         android:layout_marginEnd="66dp"
         android:layout_marginBottom="1dp"
         android:backgroundTint="#b3b3b1"

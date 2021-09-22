@@ -109,7 +109,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartViewHolder>{
                     total=0;
                     for(Cart c : listData)
                         total+=((Integer.parseInt(c.getPrice()))*(Integer.parseInt(c.getQuantity())));
-                    cart1.total_cost.setText(String.valueOf(total));
+                    cart1.total_cost.setText("Rs."+String.valueOf(total));
 //                ((Main2Activity) cart1.getContext()).removeBadgeView();
             }
         });

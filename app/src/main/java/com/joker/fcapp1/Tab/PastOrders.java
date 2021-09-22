@@ -47,7 +47,7 @@ public class PastOrders extends Fragment {
     TextView tx;
     public static String id;
     FirebaseDatabase database;
-    DatabaseReference dRef,profileRef;
+    DatabaseReference dRef,dRef1;
     List<Order> order = new ArrayList<>();
     FirebaseRecyclerAdapter<Order, PastOrderViewHolder> adapter;
     String userKey,date;
@@ -55,7 +55,7 @@ public class PastOrders extends Fragment {
     List<Cart> cart;
     Button showmore;
     View kodu;
-    public static int limit=1;
+    public static   int limit=5,itemCount=0;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         ordersViewModel =
@@ -63,7 +63,7 @@ public class PastOrders extends Fragment {
         View root = inflater.inflate(R.layout.fragment_pastorders, container, false);
         database = FirebaseDatabase.getInstance();
 //        tx = root.findViewById(R.id.sample);
-        dRef = database.getReference("PastOrders");
+
         recyclerView = root.findViewById(R.id.pastordesrrecyclerview);
         bg=root.findViewById(R.id.bg_img);
         showmore=root.findViewById(R.id.showmore);
@@ -75,17 +75,17 @@ public class PastOrders extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         userKey = user.getUid();
-
-        loadOrder();
+        dRef = database.getReference("PastOrders");
+        loadOrder(true);
 
 //        final TextView textView = root.findViewById(R.id.text_notifications);
 //        ordersViewModel.getText().observe(this, new Observer<String>() {
         return root;
     }
-    private void loadOrder() {
+    private void loadOrder(final boolean flag) {
 
         FirebaseRecyclerOptions<Order> options=new FirebaseRecyclerOptions.Builder<Order>()
-                .setQuery(dRef.orderByChild("uid").equalTo(userKey),Order.class)
+                .setQuery(dRef.orderByChild("uid").equalTo(userKey).limitToLast(limit),Order.class)
                 .build();
 
 
@@ -93,6 +93,20 @@ public class PastOrders extends Fragment {
 
             @Override
             protected void onBindViewHolder(@NonNull PastOrderViewHolder holder, int position, @NonNull Order model) {
+                if(flag) {
+                    dRef.orderByChild("uid").equalTo(userKey)
+                            .addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    itemCount = (int) snapshot.getChildrenCount();
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
+                }
                 if(getItemCount()==0){
                     bg.setVisibility(View.VISIBLE);
                     recyclerView.setVisibility(View.GONE);
@@ -102,10 +116,14 @@ public class PastOrders extends Fragment {
                 else{
                     bg.setVisibility(View.GONE);
                     recyclerView.setVisibility(View.VISIBLE);
-                    if(getItemCount()-1<limit) {
+                    if(limit>itemCount) {
                         kodu.setVisibility(View.GONE);
                         showmore.setVisibility(View.GONE);
                     }
+//                    else if(!(position>=getItemCount()-limit)) {
+//                        holder.itemView.setVisibility(View.GONE);
+//                        holder.itemView.setLayoutParams(new RecyclerView.LayoutParams(0, 0));
+//                    }
                     else {
                         showmore.setVisibility(View.VISIBLE);
                         kodu.setVisibility(View.VISIBLE);
@@ -146,10 +164,7 @@ public class PastOrders extends Fragment {
                 String[] words=datetime.split("\\s");
                 date=words[1]+" "+words[2]+" "+words[5];
 //                id="#"+id;
-                if(!(position>=getItemCount()-limit)) {
-                        holder.itemView.setVisibility(View.GONE);
-                        holder.itemView.setLayoutParams(new RecyclerView.LayoutParams(0, 0));
-                }
+
 //                else{
 //                    holder.itemView.setVisibility(View.GONE);
 //                    holder.itemView.setLayoutParams(new RecyclerView.LayoutParams(0, 0));
@@ -207,8 +222,8 @@ public class PastOrders extends Fragment {
         showmore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                limit=limit+1;
-                loadOrder();
+                limit=limit+5;
+                loadOrder(false);
             }
         });
         adapter.startListening();

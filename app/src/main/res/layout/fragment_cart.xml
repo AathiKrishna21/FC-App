@@ -16,18 +16,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/title2" />
-<!--    <ImageView-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:id="@+id/bg_img"-->
-<!--        android:src="@drawable/empty"/>-->
-    <com.airbnb.lottie.LottieAnimationView
+    <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/animation_view"
-        app:lottie_rawRes="@raw/emptybox"
-        app:lottie_autoPlay="true"
-        app:lottie_loop="true"/>
+        android:id="@+id/bg_img"
+        android:src="@drawable/empty6"/>
+<!--    <com.airbnb.lottie.LottieAnimationView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:id="@+id/animation_view"-->
+<!--        app:lottie_rawRes="@raw/emptybox"-->
+<!--        app:lottie_autoPlay="true"-->
+<!--        app:lottie_loop="true"/>-->
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/cartrecyclerview"
@@ -73,36 +73,43 @@
                 android:text="1000"/>
         </RelativeLayout>
 
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="25dp"
-            android:layout_marginRight="25dp"
-            android:layout_centerHorizontal="true"
-            app:cardCornerRadius="5dp"
-            app:cardElevation="5dp"
-            android:layout_below="@+id/totalrl"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/totalrl">
+<!--        <androidx.cardview.widget.CardView-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:layout_marginBottom="10dp"-->
+<!--            android:layout_marginLeft="25dp"-->
+<!--            android:layout_marginRight="25dp"-->
+<!--            android:layout_centerHorizontal="true"-->
+<!--            android:backgroundTint="@color/white"-->
+<!--            app:cardCornerRadius="5dp"-->
+<!--            app:cardElevation="5dp"-->
+<!--            android:id="@+id/paymentcardview"-->
+<!--            android:layout_below="@+id/totalrl"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/totalrl">-->
 
 
             <Button
                 android:id="@+id/button3"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
-                android:background="#5151A6"
+                android:background="@drawable/rounded_corners"
                 android:elevation="5dp"
                 android:backgroundTint="@color/white"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"
                 android:text="PROCEED TO PAYMENT"
+                android:layout_below="@+id/totalrl"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                 android:textColor="@color/orange"
                 android:textStyle="bold|italic"
                 android:textSize="14dp" />
-        </androidx.cardview.widget.CardView>
+<!--        </androidx.cardview.widget.CardView>-->
 
     </RelativeLayout>
 

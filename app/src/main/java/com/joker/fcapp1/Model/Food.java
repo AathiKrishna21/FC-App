@@ -1,65 +1,63 @@
 package com.joker.fcapp1.Model;
 
 public class Food {
-    private String Image;
-    private String MenuId;
+    private String image;
+    private String menuId;
 
 
 
-    private String Name;
-    private String Price;
-    private boolean Available;
-
-    public Food(String image, String menuId, String name, String price,boolean available) {
-        Image = image;
-        MenuId = menuId;
-        Name = name;
-        Price = price;
-        Available=available;
-    }
+    private String name;
+    private String price;
+    private boolean available;
 
     public Food() {
-
     }
+
+    public Food(String image, String menuId, String name, String price, boolean available) {
+        this.image = image;
+        this.menuId = menuId;
+        this.name = name;
+        this.price = price;
+        this.available = available;
+    }
+
     public String getImage() {
-        return Image;
+        return image;
     }
 
     public void setImage(String image) {
-        Image = image;
-    }
-    public boolean getAvailable() {
-        return Available;
+        this.image = image;
     }
 
-    public void setAvailable(boolean available) {
-        Available = available;
-    }
     public String getMenuId() {
-        return MenuId;
+        return menuId;
     }
 
     public void setMenuId(String menuId) {
-        MenuId = menuId;
+        this.menuId = menuId;
     }
 
     public String getName() {
-        return Name;
+        return name;
     }
 
     public void setName(String name) {
-        Name = name;
+        this.name = name;
     }
 
     public String getPrice() {
-        return Price;
+        return price;
     }
 
     public void setPrice(String price) {
-        Price = price;
+        this.price = price;
     }
 
+    public boolean isAvailable() {
+        return available;
+    }
 
-
-
+    public void setAvailable(boolean available) {
+        this.available = available;
+    }
 }

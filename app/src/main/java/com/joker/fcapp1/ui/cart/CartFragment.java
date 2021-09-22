@@ -21,6 +21,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -57,6 +58,7 @@ import com.joker.fcapp1.ui.orders.OrdersFragment;
 import com.razorpay.Checkout;
 import com.razorpay.PaymentResultListener;
 import com.tapadoo.alerter.Alerter;
+import com.thekhaeng.pushdownanim.PushDownAnim;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -113,20 +115,19 @@ public class CartFragment extends Fragment implements PaymentResultListener {
         profiledRef=database.getReference("Users");
         relativeLayout=root.findViewById(R.id.cart_relative);
         //Init
-//        bg=root.findViewById(R.id.bg_img);
+        bg=root.findViewById(R.id.bg_img);
         recyclerView = root.findViewById(R.id.cartrecyclerview);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this.getContext());
         recyclerView.setLayoutManager(layoutManager);
-
         total_cost=root.findViewById(R.id.amount);
         orderbtn = root.findViewById(R.id.button3);
-        view=root.findViewById(R.id.animation_view);
+//        view=root.findViewById(R.id.animation_view);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         userKey = user.getUid();
 
         if(Internet.isConnectedToInternet(getContext())){
-            view.setVisibility(View.GONE);
+            bg.setVisibility(View.GONE);
             loadCart(0);
         }
         else{
@@ -134,13 +135,20 @@ public class CartFragment extends Fragment implements PaymentResultListener {
             if(new Database(getContext()).getItemCount()!=0)
                 ((Main2Activity)getActivity()).removeBadgeView();
         }
+        PushDownAnim.setPushDownAnimTo(orderbtn)
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
 
+                    }
+                });
         orderbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 final AlertDialog.Builder alertDialog=new AlertDialog.Builder(getActivity());
                 alertDialog.setTitle("Payment");
                 alertDialog.setMessage("Choose your payment method");
+
                 LayoutInflater inflater = getActivity().getLayoutInflater();
                 final View view1=inflater.inflate(R.layout.payment_selector,null);
                 amt=view1.findViewById(R.id.amount);
@@ -150,7 +158,12 @@ public class CartFragment extends Fragment implements PaymentResultListener {
                 op=view1.findViewById(R.id.radioMale);
                 cash=view1.findViewById(R.id.radioFemale);
                 radioGroup=view1.findViewById(R.id.radioGroup);
+
                 amt.setVisibility(View.GONE);
+//                if(op.isChecked()){
+//                    amt.setVisibility(View.VISIBLE);
+//                }
+
                 alertDialog.setView(view1);
                 alertDialog.setPositiveButton("PROCEED", new DialogInterface.OnClickListener() {
                     @Override
@@ -166,6 +179,38 @@ public class CartFragment extends Fragment implements PaymentResultListener {
                             Payment.setOrder(order);
                             Payment.setIsCart(true);
                             ((Main2Activity)getActivity()).razorpay();
+//                            Checkout checkout=new Checkout();
+//                            checkout.setKeyID("rzp_test_v9Eu6C6hCOiCvb");
+//                            checkout.setImage(R.drawable.fc_logo);
+//                            JSONObject object=new JSONObject();
+//                            orderid=String.valueOf(System.currentTimeMillis());
+//                            try {
+//                                // to put name
+//                                object.put("name", convertCodetoShop(order.getShopId()));
+//
+//                                // put description
+//                                object.put("description", orderid);
+//
+//                                // to set theme color
+//                                object.put("theme.color", "#FF7104");
+//
+//                                // put the currency
+//                                object.put("currency", "INR");
+//
+//                                // put amount
+//                                object.put("amount", amount);
+//
+//                                // put mobile number
+//                                object.put("prefill.contact", user.getPhoneNumber());
+//
+//                                // put email
+//                                object.put("prefill.email", email);
+//
+//                                // open razorpay to checkout activity
+//                                checkout.open(getActivity(), object);
+//                            } catch (JSONException e) {
+//                                e.printStackTrace();
+//                            }
                         }
                         if(cash.isChecked()){
                             Date currentTime = Calendar.getInstance().getTime();
@@ -200,11 +245,11 @@ public class CartFragment extends Fragment implements PaymentResultListener {
                         RadioButton rb=(RadioButton)view1.findViewById(checkedId);
                         if(op.isChecked()){
                             amt.setVisibility(View.VISIBLE);
-                            cost=Integer.parseInt(total_cost.getText().toString());
+                            cost=Integer.parseInt(total_cost.getText().toString().substring(3  ));
                             tax=(int)Math.ceil(cost*0.0236);
-                            a1.setText(String.valueOf(cost));
-                            a2.setText(String.valueOf((tax)));
-                            a3.setText(String.valueOf(cost+tax));
+                            a1.setText("₹"+String.valueOf(cost));
+                            a2.setText("₹"+String.valueOf((tax)));
+                            a3.setText("₹"+String.valueOf(cost+tax));
                             dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
                         }
                         else{
@@ -283,7 +328,7 @@ public class CartFragment extends Fragment implements PaymentResultListener {
             FoodRef.child(FoodId).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    ShopId = snapshot.child("MenuId").getValue().toString();
+                    ShopId = snapshot.child("menuId").getValue().toString();
                 }
 
                 @Override
@@ -373,14 +418,14 @@ public class CartFragment extends Fragment implements PaymentResultListener {
         if(cart.isEmpty()){
             recyclerView.setVisibility(View.GONE);
             relativeLayout.setVisibility(View.GONE);
-            view.setVisibility(View.VISIBLE);
+            bg.setVisibility(View.VISIBLE);
             if(flag==1)
                 ((Main2Activity)getActivity()).removeBadgeView();
         }
         else{
             recyclerView.setVisibility(View.VISIBLE);
             relativeLayout.setVisibility(View.VISIBLE);
-            view.setVisibility(View.GONE);
+            bg.setVisibility(View.GONE);
             ((Main2Activity)getActivity()).editBadgeView();
         }
 
@@ -388,7 +433,7 @@ public class CartFragment extends Fragment implements PaymentResultListener {
         int total=0 ;
         for(Cart cart : this.cart)
             total+=(Integer.parseInt(cart.getPrice())*(Integer.parseInt(cart.getQuantity())));
-        total_cost.setText(String.valueOf(total));
+        total_cost.setText("Rs."+String.valueOf(total));
         recyclerView.setAdapter(adapter);
     }
 

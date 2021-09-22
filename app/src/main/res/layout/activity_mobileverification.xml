@@ -9,8 +9,8 @@
 
     <EditText
         android:id="@+id/editText3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/_190sdp"
+        android:layout_height="@dimen/_40sdp"
         android:layout_marginTop="20dp"
         android:ems="10"
         android:hint="Enter OTP"
@@ -23,8 +23,8 @@
 
     <Button
         android:id="@+id/button2"
-        android:layout_width="191dp"
-        android:layout_height="53dp"
+        android:layout_width="@dimen/_140sdp"
+        android:layout_height="@dimen/_40sdp"
         android:layout_marginTop="42dp"
         android:layout_marginBottom="47dp"
         android:backgroundTint="#FF6804"
@@ -41,8 +41,8 @@
 
     <Button
         android:id="@+id/button"
-        android:layout_width="191dp"
-        android:layout_height="53dp"
+        android:layout_width="@dimen/_140sdp"
+        android:layout_height="@dimen/_40sdp"
         android:layout_marginTop="40dp"
         android:layout_marginBottom="148dp"
         android:backgroundTint="#FF6804"
@@ -58,8 +58,8 @@
 
     <EditText
         android:id="@+id/editText5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/_190sdp"
+        android:layout_height="@dimen/_40sdp"
         android:layout_marginTop="417dp"
         android:layout_marginBottom="42dp"
         android:ems="10"

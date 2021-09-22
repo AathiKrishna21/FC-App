@@ -7,52 +7,52 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/flayout">
-
-        <ImageView
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="130dp"
-            android:foreground="#80000000"
-            android:scaleType="centerCrop"
-            android:id="@+id/shop_img"/>
-<!--        <ImageButton-->
-<!--            android:layout_width="50dp"-->
-<!--            android:layout_height="50dp"-->
-<!--            android:alpha="0.25"-->
-<!--            android:src="@drawable/back_arrow1"/>-->
-
-        <ImageButton
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_back2"
-            android:id="@+id/back_button"
-            android:padding="10dp"
-            android:background="@drawable/img_click"/>
-<!--            android:backgroundTint="#0D000000"-->
+            android:id="@+id/flayout">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="130dp"
+                android:foreground="#80000000"
+                android:scaleType="centerCrop"
+                android:id="@+id/shop_img"/>
+            <!--        <ImageButton-->
+            <!--            android:layout_width="50dp"-->
+            <!--            android:layout_height="50dp"-->
+            <!--            android:alpha="0.25"-->
+            <!--            android:src="@drawable/back_arrow1"/>-->
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_back2"
+                android:id="@+id/back_button"
+                android:padding="10dp"
+                android:background="@android:color/transparent"/>
+            <!--            android:backgroundTint="#0D000000"-->
 
 
-<!--        <ImageView-->
-<!--            android:layout_width="50dp"-->
-<!--            android:layout_height="50dp"-->
-<!--            android:src="@drawable/back_arrow1"-->
-<!--            android:id="@+id/back_button"/>-->
+            <!--        <ImageView-->
+            <!--            android:layout_width="50dp"-->
+            <!--            android:layout_height="50dp"-->
+            <!--            android:src="@drawable/back_arrow1"-->
+            <!--            android:id="@+id/back_button"/>-->
 
-        <TextView
-            android:id="@+id/shopname"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:lines="1"
-            android:text="Shopname"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-            android:textColor="#FFFFFF"
-            android:textSize="30dp"
-            android:textStyle="bold|italic"
-            android:layout_gravity="center"/>
+            <TextView
+                android:id="@+id/shopname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:lines="1"
+                android:text="Shopname"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:textColor="#FFFFFF"
+                android:textSize="30dp"
+                android:textStyle="bold|italic"
+                android:layout_gravity="center"/>
 
-    </FrameLayout>
+        </FrameLayout>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -95,15 +95,15 @@
 
             </LinearLayout>
         </com.facebook.shimmer.ShimmerFrameLayout>
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="5dp"
-        android:layout_above="@+id/cart_relative"
-        android:id="@+id/menurecyclerview"
-        android:layout_below="@+id/topic_menu"
-        android:scrollbars="vertical"
-        />
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dp"
+            android:layout_above="@+id/cart_relative"
+            android:id="@+id/menurecyclerview"
+            android:layout_below="@+id/topic_menu"
+            android:scrollbars="vertical"
+            />
         <RelativeLayout
             android:id="@+id/cart_relative"
             android:layout_width="match_parent"
@@ -151,30 +151,33 @@
                 android:layout_marginLeft="20dp"
                 android:textSize="17dp"
                 android:textStyle="bold" />
-            <androidx.cardview.widget.CardView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="5dp"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="20dp"
-                >
+<!--            <androidx.cardview.widget.CardView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_centerVertical="true"-->
+<!--                app:cardCornerRadius="20dp"-->
+<!--                app:cardElevation="5dp"-->
+<!--                android:layout_alignParentRight="true"-->
+<!--                android:layout_marginRight="20dp"-->
+<!--                >-->
 
 
                 <Button
                     android:id="@+id/gotocart"
                     android:layout_width="80dp"
                     android:layout_height="40dp"
-                    android:background="#5151A6"
+                    android:background="@drawable/rounded_corners"
                     android:backgroundTint="@color/white"
                     android:elevation="5dp"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="20dp"
                     android:text="CART"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                     android:textColor="@color/orange"
                     android:textSize="14dp"
                     android:textStyle="bold|italic" />
-            </androidx.cardview.widget.CardView>
+<!--            </androidx.cardview.widget.CardView>-->
 
         </RelativeLayout>
     </RelativeLayout>

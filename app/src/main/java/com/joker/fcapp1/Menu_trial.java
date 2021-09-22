@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -38,6 +39,7 @@ import com.joker.fcapp1.ViewHolder.FoodViewHolder;
 import com.joker.fcapp1.ViewHolder.MenuViewHolder;
 import com.joker.fcapp1.ui.home.HomeFragment;
 import com.squareup.picasso.Picasso;
+import com.thekhaeng.pushdownanim.PushDownAnim;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -63,13 +65,14 @@ public class Menu_trial extends AppCompatActivity {
     int total;
     RelativeLayout cartrl;
     Cart cart1;
+    ImageButton backbtn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_trial);
         img=findViewById(R.id.shop_img);
         shop_name=findViewById(R.id.shopname);
-        back=findViewById(R.id.back_button);
+        backbtn=findViewById(R.id.back_button);
         database= FirebaseDatabase.getInstance();
         dRef= database.getReference("Foods");
         Ref = database.getReference("Shops");
@@ -83,9 +86,16 @@ public class Menu_trial extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         window=this.getWindow();
         window.setStatusBarColor(this.getResources().getColor(R.color.status_bar));
-        recyclerView.setVisibility(View.GONE);
+//        recyclerView.setVisibility(View.GONE);
         shopId = getIntent().getStringExtra("ShopId");
         onadd();
+        PushDownAnim.setPushDownAnimTo(gotocart)
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                    }
+                });
         shimmerFrameLayout = findViewById(R.id.shimmerLayout);
         if(new Database(this).getItemCount()==0)
             cartrl.setVisibility(View.GONE);
@@ -95,6 +105,13 @@ public class Menu_trial extends AppCompatActivity {
             shimmerFrameLayout.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);
         }
+        PushDownAnim.setPushDownAnimTo(backbtn)
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                    }
+                });
         loadFoods(shopId);
 //        shimmerFrameLayout = findViewById(R.id.shimmerLayout);
 //        shimmerFrameLayout.startShimmer();
@@ -113,16 +130,16 @@ public class Menu_trial extends AppCompatActivity {
         });
         FirebaseRecyclerOptions<Food> options =
                 new FirebaseRecyclerOptions.Builder<Food>()
-                        .setQuery(dRef.orderByChild("MenuId").equalTo(shopId),Food.class)
+                        .setQuery(dRef.orderByChild("menuId").equalTo(shopId),Food.class)
                         .build();
-        back.setOnClickListener(new View.OnClickListener() {
+        backbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent=new Intent(Menu_trial.this,Main2Activity.class);
                 startActivity(intent);
             }
         });
-        Ref.child(shopId).child("Image").addValueEventListener(new ValueEventListener() {
+        Ref.child(shopId).child("image").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String url=snapshot.getValue(String.class);
@@ -139,7 +156,7 @@ public class Menu_trial extends AppCompatActivity {
         adapter = new FirebaseRecyclerAdapter<Food, MenuViewHolder>(options) {
             @Override
             protected void onBindViewHolder(@NonNull final MenuViewHolder holder, final int position, @NonNull final Food model) {
-                if (model.getAvailable()) {
+                if(model.isAvailable()) {
                     cart = new Database(getBaseContext()).getCarts();
                     holder.cost.setText("Rs." + model.getPrice());
                     holder.name.setText(model.getName());
@@ -161,7 +178,7 @@ public class Menu_trial extends AppCompatActivity {
                         dRef.child(FoodId).addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                String ShopId = snapshot.child("MenuId").getValue().toString();
+                                String ShopId = snapshot.child("menuId").getValue().toString();
                                 if (!shopId.equals(ShopId)) {
                                     holder.add.setVisibility(View.GONE);
                                     holder.quantity.setVisibility(View.GONE);
@@ -214,36 +231,35 @@ public class Menu_trial extends AppCompatActivity {
                             }
                         }
                     });
-
                 }
                 else{
                     holder.itemView.setLayoutParams(new RecyclerView.LayoutParams(0, 0));
                 }
+
             }
 
-                @NonNull
-                @Override
-                public MenuViewHolder onCreateViewHolder (@NonNull ViewGroup parent,int viewType){
-                    View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.dish, parent, false);
-                    return new MenuViewHolder(view);
-                }
-
+            @NonNull
+            @Override
+            public MenuViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.dish,parent,false);
+                return new MenuViewHolder(view);
+            }
         };
         recyclerView.setAdapter(adapter);
         adapter.startListening();
-        if(SFlag.getSflag()==0) {
-            final Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    shimmerFrameLayout.setVisibility(View.GONE);
-                    shimmerFrameLayout.stopShimmer();
-                    recyclerView.setVisibility(View.VISIBLE);
-                    SFlag.setSflag(1);
-                }
-            }, 1200);
-
-        }
+//        if(SFlag.getSflag()==0) {
+//            final Handler handler = new Handler();
+//            handler.postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    shimmerFrameLayout.setVisibility(View.GONE);
+////                    shimmerFrameLayout.stopShimmer();
+////                    recyclerView.setVisibility(View.VISIBLE);
+//                    SFlag.setSflag(1);
+//                }
+//            }, 1200);
+//
+//        }
     }
 
     @Override
@@ -297,7 +313,7 @@ public class Menu_trial extends AppCompatActivity {
         cart = new Database(this).getCarts();
         for(Cart cart : this.cart)
             total+=(Integer.parseInt(cart.getPrice())*(Integer.parseInt(cart.getQuantity())));
-        amount.setText(String.valueOf(total));
+        amount.setText("₹"+String.valueOf(total));
 
     }
 }

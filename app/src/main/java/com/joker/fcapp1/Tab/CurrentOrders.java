@@ -144,7 +144,7 @@ public class CurrentOrders extends Fragment {
                 holder.time.setText("Today, "+model.getTime().substring(0,5));
                 final String menuId=model.getShopId();
 
-                Ref.child(menuId).child("Image").addValueEventListener(new ValueEventListener() {
+                Ref.child(menuId).child("image").addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         String url=snapshot.getValue(String.class);

@@ -10,8 +10,8 @@
 
     <Button
         android:id="@+id/button2"
-        android:layout_width="241dp"
-        android:layout_height="62dp"
+        android:layout_width="@dimen/_180sdp"
+        android:layout_height="@dimen/_50sdp"
         android:layout_marginTop="1dp"
         android:layout_marginBottom="122dp"
         android:backgroundTint="#FF7104"
@@ -27,8 +27,8 @@
 
     <Button
         android:id="@+id/button"
-        android:layout_width="241dp"
-        android:layout_height="62dp"
+        android:layout_width="@dimen/_180sdp"
+        android:layout_height="@dimen/_50sdp"
         android:layout_marginTop="1dp"
         android:layout_marginBottom="21dp"
         android:backgroundTint="#FF7104"
@@ -44,8 +44,8 @@
 
     <com.google.android.gms.common.SignInButton
         android:id="@+id/sign_in_button"
-        android:layout_width="241dp"
-        android:layout_height="56dp"
+        android:layout_width="@dimen/_180sdp"
+        android:layout_height="@dimen/_50sdp"
         android:layout_alignParentBottom="true"
         android:layout_marginTop="377dp"
         android:layout_marginBottom="25dp"

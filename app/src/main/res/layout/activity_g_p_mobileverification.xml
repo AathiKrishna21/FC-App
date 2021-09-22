@@ -9,8 +9,8 @@
 
     <Button
         android:id="@+id/button"
-        android:layout_width="191dp"
-        android:layout_height="53dp"
+        android:layout_width="@dimen/_140sdp"
+        android:layout_height="@dimen/_50sdp"
         android:layout_marginTop="40dp"
         android:layout_marginBottom="212dp"
         android:backgroundTint="#FF6804"
@@ -26,8 +26,8 @@
 
     <EditText
         android:id="@+id/editText5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/_190sdp"
+        android:layout_height="@dimen/_55sdp"
         android:layout_marginTop="488dp"
         android:layout_marginBottom="40dp"
         android:ems="10"
