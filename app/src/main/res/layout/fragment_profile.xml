@@ -52,8 +52,8 @@
 
                     <ImageView
                         android:id="@+id/imageView13"
-                        android:layout_width="64dp"
-                        android:layout_height="64dp"
+                        android:layout_width="@dimen/_50sdp"
+                        android:layout_height="@dimen/_50sdp"
                         android:adjustViewBounds="true"
                         android:cropToPadding="true"
                         tools:srcCompat="@tools:sample/avatars" />

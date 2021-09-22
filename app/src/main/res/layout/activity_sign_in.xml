@@ -11,7 +11,7 @@
         android:id="@+id/email"
         android:layout_width="@dimen/_195sdp"
         android:layout_height="@dimen/_40sdp"
-        android:layout_marginTop="422dp"
+        android:layout_marginTop="@dimen/_320sdp"
         android:layout_marginBottom="1dp"
         android:textCursorDrawable="@drawable/cursor_color"
         android:ems="10"
