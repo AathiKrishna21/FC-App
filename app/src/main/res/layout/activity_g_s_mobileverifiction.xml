@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/pg5"
-    tools:context="com.joker.fcapp1.g_s_mobileverification">
+    tools:context="com.joker.fcapp1.g_s_mobileverification"
+    android:forceDarkAllowed="false">
 
 
 <!--    <Button-->

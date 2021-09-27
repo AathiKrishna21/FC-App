@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/pg3"
-    tools:context="com.joker.fcapp1.SignInActivity">
+    tools:context="com.joker.fcapp1.SignInActivity"
+    android:forceDarkAllowed="false">
 
     <EditText
         android:id="@+id/email"

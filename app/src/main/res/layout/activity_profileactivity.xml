@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.joker.fcapp1.profileactivity">
+    tools:context="com.joker.fcapp1.profileactivity"
+    android:forceDarkAllowed="false">
 
     <Button
         android:id="@+id/sign_out"

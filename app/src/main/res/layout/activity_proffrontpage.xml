@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/pg2"
-    tools:context="com.joker.fcapp1.proffrontpage">
+    tools:context="com.joker.fcapp1.proffrontpage"
+    android:forceDarkAllowed="false">
     <Button
         android:id="@+id/button2"
         android:layout_width="@dimen/_180sdp"
