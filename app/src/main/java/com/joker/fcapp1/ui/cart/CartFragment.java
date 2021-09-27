@@ -171,7 +171,7 @@ public class CartFragment extends Fragment implements PaymentResultListener {
 
                         if(op.isChecked()){
 
-                            String samount=a3.getText().toString();
+                            String samount=a3.getText().toString().substring(1);
                             int amount =Math.round(Float.parseFloat(samount)*100);
                             order = new Order("","",ShopId,String.valueOf(amount),"0",userKey,cart,false);
                             orderid=String.valueOf(System.currentTimeMillis());
@@ -219,7 +219,7 @@ public class CartFragment extends Fragment implements PaymentResultListener {
                             date=words[1]+" "+words[2]+" "+words[5];
                             time=words[3];
                             time2=time.substring(0,5);
-                            order = new Order(date,time,ShopId,total_cost.getText().toString(),"0",userKey,cart,false);
+                            order = new Order(date,time,ShopId,total_cost.getText().toString().substring(3),"0",userKey,cart,false);
                             orderid=String.valueOf(System.currentTimeMillis());
                             Payment.setOrder(order);
                             Payment.setOrderId(orderid);

@@ -52,8 +52,8 @@
 
                     <ImageView
                         android:id="@+id/imageView13"
-                        android:layout_width="@dimen/_50sdp"
-                        android:layout_height="@dimen/_50sdp"
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
                         android:adjustViewBounds="true"
                         android:cropToPadding="true"
                         tools:srcCompat="@tools:sample/avatars" />
@@ -102,31 +102,37 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/textView5" />
 
-                <androidx.cardview.widget.CardView
+                <!--                <androidx.cardview.widget.CardView-->
+                <!--                    android:layout_width="wrap_content"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:layout_marginTop="25dp"-->
+                <!--                    android:layout_marginBottom="10dp"-->
+                <!--                    app:cardCornerRadius="30dp"-->
+                <!--                    app:cardElevation="5dp"-->
+                <!--                    app:layout_constraintBottom_toBottomOf="parent"-->
+                <!--                    app:layout_constraintEnd_toEndOf="parent"-->
+                <!--                    app:layout_constraintStart_toStartOf="parent"-->
+                <!--                    app:layout_constraintTop_toBottomOf="@id/textView6">-->
+
+                <Button
+                    android:id="@+id/button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/rounded_corners"
+                    android:elevation="5dp"
+                    android:backgroundTint="#FF7104"
+                    android:text="SIGN OUT"
                     android:layout_marginTop="25dp"
                     android:layout_marginBottom="10dp"
-                    app:cardCornerRadius="30dp"
-                    app:cardElevation="5dp"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                    android:textColor="#FFFFFF"
+                    android:textStyle="bold|italic"
+                    android:textSize="14dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/textView6">
-
-                    <Button
-                        android:id="@+id/button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="#5151A6"
-                        android:elevation="5dp"
-                        android:backgroundTint="#FF7104"
-                        android:text="SIGN OUT"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                        android:textColor="#FFFFFF"
-                        android:textStyle="bold|italic"
-                        android:textSize="14dp" />
-                </androidx.cardview.widget.CardView>
+                    app:layout_constraintTop_toBottomOf="@id/textView6"/>
+                <!--                </androidx.cardview.widget.CardView>-->
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -172,6 +178,17 @@
                     app:lottie_rawRes="@raw/nointernet1"
                     app:lottie_autoPlay="true"
                     app:lottie_loop="true"/>
+                <TextView
+                    android:id="@+id/whoareyou"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="230dp"
+                    android:text="HEY. WHO ARE YOU?"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                    android:textStyle="bold|italic"
+                    android:textSize="30dp"
+                    android:textColor="#FF7104"
+                    android:layout_gravity="center_horizontal"/>
 
             </androidx.cardview.widget.CardView>
         </RelativeLayout>

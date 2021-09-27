@@ -88,7 +88,6 @@ public class Main2Activity extends AppCompatActivity implements PaymentResultLis
         mAuth = FirebaseAuth.getInstance();
         if(database.getItemCount()!=0)
             addBadgeView(count);
-
     }
     public void addBadgeView(String s) {
         BottomNavigationMenuView menuView = (BottomNavigationMenuView) navView.getChildAt(0);
@@ -173,6 +172,9 @@ public class Main2Activity extends AppCompatActivity implements PaymentResultLis
         time2=time.substring(0,5);
         Payment.order.setDate(date);
         Payment.order.setTime(time);
+        String tt=Payment.order.getTotalcost();
+        tt=tt.substring(0,tt.length()-2);
+        Payment.order.setTotalcost(tt);
 //        order.setDate(date);
 //        order.setTime(time);
         dRef.child(Payment.getOrderId()).setValue(Payment.getOrder());
